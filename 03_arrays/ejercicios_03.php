@@ -77,8 +77,14 @@
         "Samuel" => 9,
     ];
     ?>
+    <?php
+    $Xivatos["Agustín"] = rand(0,10);
+    $Xivatos["Waluis"] = rand(0,10);
+    unset($Xivatos["Vicente"]);
+    ksort($Xivatos);
+    ?>
 
-<table>
+    <table>
         <caption><h1>Xivatos</h1></caption>
         <thead>
             <tr>
@@ -109,6 +115,8 @@
 
         </tbody>
     </table>
+    
+
 
 
 </body>
