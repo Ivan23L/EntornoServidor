@@ -16,7 +16,7 @@
         ["Toy Story","Infantil",2000]
     ];
 
-    /* 
+    /*
         1.AÑADIR CON UN RAND, LA DURACION DE CADA PELICULA. LA DURACION SERÁ UN NÚMERO 
         ALEATORIO ENTRE 30 Y 240
 
@@ -29,13 +29,32 @@
             2.AÑO
             3.TITULO (TODO ALFABÉTICAMENTE, Y EL AÑO DE MÁS RECIENTE A MÁS ANTIGUO)
     */
+
+    /* 1 */
+    for($i=0;$i < count($peliculas);$i++){
+        $peliculas[$i][3]=rand(30,240);
+
+        if($peliculas[$i][3]<60)$peliculas[$i][4]="CORTOMETRAJE";
+        else $peliculas[$i][4]="LARGOMETRAJE";
+    }
+
+
+    $titulo = array_column($peliculas,0);
+    $categoria = array_column($peliculas,1);
+    $anio = array_column($peliculas,2);
+
+
+    array_multisort($categoria, SORT_ASC,$anio,SORT_DESC,$titulo,SORT_ASC,$peliculas);
+
     ?>
-    <table>
+<table>
     <thead>
         <tr>
             <th>Título</th>
             <th>Categoría</th>
             <th>Año de Salida</th>
+            <th>Duración</th>
+            <th>Tipo</th>
         </tr>
     </thead>
     <tbody>
@@ -45,11 +64,13 @@
             //print_r($videojuego);  MUESTRA TODOS LOS ELEMENTOS
 
             //SOLO EXISTE DENTRO DEL FOREACH
-            list($titulo,$categoria,$anio) = $pelicula;
+            list($titulo,$categoria,$anio,$duracion,$tipo) = $pelicula;
             echo"<tr>";
             echo"<td>$titulo</td>";
             echo"<td>$categoria</td>";
             echo"<td>$anio</td>";
+            echo"<td>$duracion</td>";
+            echo"<td>$tipo</td>";
             echo"</tr>";
         }
         ?>      
