@@ -43,6 +43,7 @@
 
 <?php
 //Función para convertir el número introducido de una unidad a otra
+
 function convertirUnidad($numero, $inicial, $final){
     //Voy a convertir el número inicial siempre a celsius para hacer la conversión más cómoda
 

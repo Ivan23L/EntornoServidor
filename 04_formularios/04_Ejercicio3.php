@@ -38,7 +38,7 @@ function esPrimo($numero){
             return false;
         }
     }
-    //Devuelve el número primo pasados los filtros
+    //Devuelve el número primo, pasados los filtros
     return true;
 }
 
