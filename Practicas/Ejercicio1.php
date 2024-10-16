@@ -23,8 +23,8 @@
     array_push($animes_japoneses, ["Shin Chan","Comedia"]);
 
     //Elimino el primer anime del array
-    /* unset($animes_japoneses[0]); */
-
+    unset($animes_japoneses[0]);
+    $animes_japoneses = array_values($animes_japoneses);
 
     //El año de salida se genera de forma aleatorio entre 1990/2030 en la tercera columna
     for($i=0;$i < count($animes_japoneses);$i++){
