@@ -11,41 +11,36 @@
     SE MOSTRARÁ LA TABLA DE MULTIPLICAR DE ESE NÚMERO EN UNA TABLA HTML
     -->
 <form action="" method="post">
-<label for="numero">Numero</label>
+<label for="numero">Numero:</label>
 <input type="text" name="numero" id="numero" placeholder="Introduce un numero amigo">
+<button type="submit">Generar Tabla</button>
 <link href="estilos.css" rel = "stylesheet" type ="text/css">
 </form>
+<?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $numero = $_POST["numero"];
 
-<table>
-    <thead>
-        <tr>
-            <th>Título</th>
-            <th>Categoría</th>
-            <th>Año de Salida</th>
-            <th>Duración</th>
-            <th>Tipo</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        foreach($peliculas as $pelicula){
+        if ($numero >= 0) {
+            echo "<h2>Tabla de multiplicar del número $numero</h2>";
+            echo "<table>";
+            echo "<tr><th>Multiplicación</th><th>Resultado</th></tr>";
 
-            //print_r($videojuego);  MUESTRA TODOS LOS ELEMENTOS
+            // Generar tabla de multiplicar
+            for ($i = 1; $i <= 10; $i++) {
+                $resultado = $numero * $i;
+                echo "<tr><td>$numero x $i</td><td>$resultado</td></tr>";
+            }
 
-            //SOLO EXISTE DENTRO DEL FOREACH
-            list($titulo,$categoria,$anio,$duracion,$tipo) = $pelicula;
-            echo"<tr>";
-            echo"<td>$titulo</td>";
-            echo"<td>$categoria</td>";
-            echo"<td>$anio</td>";
-            echo"<td>$duracion</td>";
-            echo"<td>$tipo</td>";
-            echo"</tr>";
+            echo "</table>";
+        } else {
+            echo "<p>Por favor, ingresa un número válido.</p>";
         }
-        ?>      
-    </tbody>
-</table>
-</form>
+    } else {
+        echo "<p>Error: No se recibió ningún número.</p>";
+    }
+?>
+
+
 
 </body>
 </html>
