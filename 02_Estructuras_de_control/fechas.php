@@ -25,7 +25,7 @@
     $numero = "2";
 
     if($numero == 2){
-        echo "ES EL MISMO NUMERO.";
+        echo "ES EL MISMO NUMERO.<br>";
     }
 
     if($numero !== 2){
@@ -70,7 +70,7 @@
 
     /* 
         TENEMOS CLASE LUNES, MIERCOLES Y VIERNES NO TENEMOS CLASE EL RESTO.
-        HACER UN SWITH QUE DIGA SI HOY TENEMOS CLASE O NO.
+        HACER UN SWITCH QUE DIGA SI HOY TENEMOS CLASE O NO.
     */
 
 

@@ -56,6 +56,7 @@
 
     unset($animales[1]); //Elimina del array 
     $animales = array_values($animales);
+    echo "<p>" . $animales["4"] ."</p>";
 
     echo"<p><p><p>---------------</p></p></p>";
 

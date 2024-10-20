@@ -18,7 +18,7 @@
         Viernes 27 de Septiembre de 2024
     UTILIZAR LAS ESTRUCTURAS DE CONTROL NECESARIAS
     -->
-
+    <h3>EJERCICIO 1</h3>
     <?php
         $dia=date("l");
         $num=date("j");
@@ -59,14 +59,14 @@
 
         $i = 1;
 
-        echo"<ul>";
+        echo"<ol>";
         while($i <= 100):
             if($i % 3 == 0):
                 echo"<li>$i</li>";
             endif;
             $i++;
         endwhile;
-        echo"</ul>";
+        echo"</ol>";
     ?> 
 
    <!--EJERCICIO 3: CALCULAR LA SUMA DE LOS NÚMEROS PARES ENTRE 1 Y 20 -->

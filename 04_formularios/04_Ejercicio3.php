@@ -26,9 +26,9 @@
 </form>
 <?php
 
-//Creo una función para buscar los primos
+//Creo una función para buscar los primos (Ejercicio de clase)
 function esPrimo($numero){
-    //Sacamos el 0 y el 1
+    //Sacamos el 0 y el 1 no los consideramos primos
     if($numero < 2){
         return false;
     }

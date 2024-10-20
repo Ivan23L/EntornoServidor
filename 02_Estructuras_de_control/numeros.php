@@ -119,7 +119,7 @@
         default => "ERROR"
     };
 
-    echo"<h1> El número tiene $digitos dígitos </h1>";
+    echo"<h1> El número tiene $digitos $digitos_texto </h1>";
 
     ?>
 

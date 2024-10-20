@@ -23,7 +23,7 @@
     <input type="text" name="numero" id="numero" placeholder="Introduce un numero">
     
     <!-- Unidad Inicial del número que se introduce -->
-    <label for="unidadInicial"></label>
+    <label for="unidadInicial">Unidad Inicial: </label>
     <select name="unidadInicial" id="unidadInicial">
         <option value="celsius">Celsius</option>
         <option value="kelvin">Kelvin</option>
