@@ -30,32 +30,32 @@
 <input type="submit" value="Enviar">
 </form>
 
-<?php
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-$nombre = $_POST["nombre"];
-$edad = $_POST["edad"];
-$estado = "";
+    <?php
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $nombre = $_POST["nombre"];
+        $edad = $_POST["edad"];
+        $estado = "";
 
-/*
-Si edad es menor que 18, la funcion match escribirá en estado "es menor de edad",
-así con todas las situaciones
-$estado = match(true){
-    $edad < 18 => "es menor de edad",
-    $edad > 65 => "se ha jubilado",
-    $edad >= 18 and $edad <= 65 => "es mayor de edad"
-}; 
-*/
+    /*
+    Si edad es menor que 18, la funcion match escribirá en estado "es menor de edad",
+    así con todas las situaciones
+    $estado = match(true){
+        $edad < 18 => "es menor de edad",
+        $edad > 65 => "se ha jubilado",
+        $edad >= 18 and $edad <= 65 => "es mayor de edad"
+    }; 
+    */
 
-if($edad < 18){
-    $estado = "es menor de edad";
-}elseif($edad > 65){
-    $estado = "se ha jubilado";
-}else{
-    $estado = "es mayor de edad";
-}
+        if($edad < 18){
+            $estado = "es menor de edad";
+        }elseif($edad > 65){
+            $estado = "se ha jubilado";
+        }else{
+            $estado = "es mayor de edad";
+        }
 
-echo"<h1>$nombre $estado</h1>";
-}
-?>
+    echo"<h1>$nombre $estado</h1>";
+    }
+    ?>
 </body>
 </html>
