@@ -60,11 +60,12 @@
     define("REDUCIDO", 1.1);
     define("SUPERREDUCIDO", 1.04);
     
-    function calcularPvP($salario){
+    function calcularPvP($salario, $iva){
         $pvp = match($iva) {
-            "general" => $precio * GENERAL,
-            "reducido" => $precio * REDUCIDO,
-            "superreducido" => $precio * SUPERREDUCIDO
+            "general" => $salario * GENERAL,
+            "reducido" => $salario * REDUCIDO,
+            "superreducido" => $salario * SUPERREDUCIDO
         };
+        return $pvp;
     }
 ?>
