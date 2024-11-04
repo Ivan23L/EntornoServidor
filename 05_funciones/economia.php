@@ -1,5 +1,5 @@
 <?php
-    function calcularIRPF($salario){
+    function calcularIRPF( int|float $salario) : float {
         $salarioNeto = null;
         
         $tramo1 = (12450 * 0.19);
@@ -60,7 +60,7 @@
     define("REDUCIDO", 1.1);
     define("SUPERREDUCIDO", 1.04);
     
-    function calcularPvP($salario, $iva){
+    function calcularPvP(int $salario, string $iva) : int {
         $pvp = match($iva) {
             "general" => $salario * GENERAL,
             "reducido" => $salario * REDUCIDO,

@@ -7,6 +7,8 @@
     <!-- Aplico CSS de BOOTSTRAP -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- 
+        https://anayamultimedia.es/primer_capitulo/curso-de-php-8-y-mysql-8.pdf
+
         Crea un formulario con los siguientes campos: DNi, nombre, primer apellido, segundo apellido,
         fecha de nacimiento y correo electronico. Valida el formulario mediante PHP.
         
@@ -36,11 +38,14 @@
     <?php
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $tmpDni = $_POST['dni'];
-            $tmpNombre = $_POST['nombre'];
-            $tmpApellido1 = $_POST['apellido1'];
-            $tmpApellido2 = $_POST['apellido2'];
+            $tmpNombre = trim(htmlspecialchars($_POST['nombre']));
+            /* la funcion preg_replace elimina todos los espacios añadidos adicionales,
+            solo se quedará con uno e ignorará los demás */
+            $tmpNombre = preg_replace('!\s+!', ' ', $tmpNombre);
+            $tmpApellido1 = htmlspecialchars($_POST['apellido1']);
+            $tmpApellido2 = htmlspecialchars($_POST['apellido2']);
             $tmpFecha = $_POST['fecha'];
-            $tmpCorreo = $_POST['correo'];
+            $tmpCorreo = htmlspecialchars($_POST['correo']);
 
 
             //VALIDAR NOMBRE 
@@ -56,7 +61,8 @@
                         $errorNombre = "El nombre debe tener entre 2 y 40 carácteres. Solamente letras
                         espacios en blanco y tildes";
                     }else{
-                        $nombre = $tmpNombre;
+                        /* primero se pasa todo a minusculas y se convierte la primera letra en mayúscula */
+                        $nombre = ucwords(strtolower($tmpNombre));
                     }
                 }
             }
@@ -74,7 +80,7 @@
                         $errorApellido1 = "El apellido1 debe tener entre 2 y 60 carácteres. Solamente letras
                         espacios en blanco y tildes";
                     }else{
-                        $apellido1 = $tmpApellido1;
+                        $apellido1 = ucwords(strtolower($tmpApellido1));
                     }
                 }
             }
@@ -92,7 +98,7 @@
                         $errorApellido2 = "El apellido2 debe tener entre 2 y 60 carácteres. Solamente letras
                         espacios en blanco y tildes";
                     }else{
-                        $apellido2 = $tmpApellido2;
+                        $apellido2 = ucwords(strtolower($tmpApellido2));
                     }
                 }
             }
@@ -174,59 +180,60 @@
             } else {
                 $patron = "/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/";
                 if(!preg_match($patron, $tmpFecha)) {
-                    $errorFecha = "El formato de la fecha es incorrecto";
+                    $errorFecha = "Formato de fecha incorrecto";
                 } else {
-                    $fechaActual = date("d-m-Y");  //  10 02 2024
-                    list($diaActual, $mesActual, $anioActual) = explode('-', $fechaActual);
+                    $fechaActual = date("Y-m-d");
+                    list($anioActual,$mesActual,$diaActual) = explode('-',$fechaActual);
+                    list($anio,$mes,$dia) = explode('-',$tmpFecha);
+
                     
-                    list($dia, $mes, $anio) = explode('-', $tmpFecha);
-                    
-                    if($anioActual - $anio <= 120 and $anioActual - $anio > 0) {
-                        //  la persona tiene menos de 120 años  VALIDA
-                        $fecha = $tmpFecha;
-                    } elseif($anioActual - $anio > 121) {
-                        //  la persona tiene mas de 120 años    NO VALIDA
-                        $errorFecha = "No puedes tener más de 120 años";
-                    } elseif($anioActual - $anio < 0) {
-                        $errorFecha = "No puedes tener menos de 0 años";
-                    } elseif($anioActual - $anio == 121) {
+                    if($anioActual - $anio < 18) {
+                        $errorFecha = "No puedes ser menor de edad";
+                    } elseif($anioActual - $anio == 18) {
                         if($mesActual - $mes < 0) {
-                            //  la persona aun no ha cumplido 121
-                            $fecha = $tmpFecha;
+                            $errorFecha = "No puedes ser menor de edad";
+                        } elseif($mesActual - $mes == 0) {
+                            if($diaActual - $dia < 0) {
+                                $errorFecha = "No puedes ser menor de edad";
+                            } else {
+                                $fecha = $tmpfecha;
+                            }
                         } elseif($mesActual - $mes > 0) {
-                            //  la persona ya ha cumplido 121
+                            $fecha = $tmpFecha;
+                        } 
+                    } elseif($anioActual - $anio > 121) {
+                        $errorFecha = "No puedes tener más de 120 años";
+                    } elseif($anioActual - $anio == 121) {
+                        if($mesActual - $mes > 0) {
                             $errorFecha = "No puedes tener más de 120 años";
                         } elseif($mesActual - $mes == 0) {
-                            if($diaActual - $dia < 0) {
-                                //  la persona aun no ha cumplido 121
-                                $fecha = $tmpFecha;
-                            } elseif($diaActual - $dia >= 0) {
-                                //  la persona ya ha cumplido 121
+                            if($diaActual - $dia >= 0) {
                                 $errorFecha = "No puedes tener más de 120 años";
-                            }
-                        }
-                    } elseif($anioActual - $anio == 0) {
-                        if($mesActual - $mes < 0) {
-                            //  la persona aun no nacido
-                            $errorFecha = "La persona aún no ha nacido";
-                        } elseif($mesActual - $mes < 0) {
-                            //  la persona ya ha nacido
-                            $fecha = $tmpFecha;
-                        } elseif($mesActual - $mes == 0) {
-                            if($diaActual - $dia < 0) {
-                                //  la persona ya ha nacido
-                                $errorFecha = "La persona aún no ha nacido";
-                            } elseif($diaActual - $dia >= 0) {
-                                //  la persona ya ha cumplido 121
+                            } else {
                                 $fecha = $tmpFecha;
                             }
-                        }
+                        } elseif($mesActual - $mes < 0) {
+                            $fecha = $tmpFecha;
+                        } 
+                    }else{
+                        $fecha = $tmpFecha;
                     }
                 }
             }
         }
+
+        function depurar($entrada){
+            $salida = htmlspecialchars($entrada);
+            /* trim quita los espacios a los laterales */
+            $salida = trim($salida);
+            /* stripslashes quita barras laterales /\ que pueden dar problemas*/
+            $salida = stripslashes($salida);
+            $salida = preg_replace('!\s+!', ' ', $salida);
+            return $salida;
+        }
     ?>
     <div class="container">
+        <h4>Fecha actual: <?php echo date("d-m-Y") ?></h4>
         <h1>Dame tus datos amigo</h1><br>
         <form class="col-4" action="" method="post">
             <div class="mb-3">
@@ -294,12 +301,12 @@
         <?php
             if(isset($dni) && isset($correo) && isset($nombre) && isset($apellido1) && isset($apellido2) && isset($fecha)){
         ?>
-            <h1><?php echo "$dni" ?></h1>
-            <h1><?php echo "$nombre" ?></h1>
-            <h1><?php echo "$apellido1" ?></h1>
-            <h1><?php echo "$apellido2" ?></h1>
-            <h1><?php echo "$fecha" ?></h1>
-            <h1><?php echo "$correo" ?></h1>
+            <h5><?php echo "$dni" ?></h5>
+            <h5><?php echo "$nombre" ?></h5>
+            <h5><?php echo "$apellido1" ?></h5>
+            <h5><?php echo "$apellido2" ?></h5>
+            <h5><?php echo "$fecha" ?></h5>
+            <h5><?php echo "$correo" ?></h5>
         <?php 
             } 
         ?>
