@@ -36,7 +36,7 @@
             // Recibir los datos del formulario
             $tmpTitulo = trim(htmlspecialchars($_POST['titulo']));
             $tmpConsola = $_POST['consola'];
-            $tmpFecha = $_POST['fecha_lanzamiento'];
+            $tmpFecha = $_POST['fechaLanzamiento'];
             $tmpPegi = $_POST['pegi'];
             $tmpDescripcion = isset($_POST['descripcion']) ? trim(htmlspecialchars($_POST['descripcion'])) : '';
 
@@ -49,18 +49,25 @@
 
             // Validar consola
             if (empty($tmpConsola)) {
-                $errorConsola = "Debe seleccionar una consola.";
+                $errorConsola = "Debe seleccionar una consola. ME ENFADAS";
             }else{
                 $consola = $tmpConsola;
             }
 
             // Validar fecha de lanzamiento
+            /*  
+                Esta línea convierte la fecha '1947-01-01' a un timestamp (un número entero que representa la cantidad de segundos transcurridos 
+                desde la medianoche del 1 de enero de 1970 en UTC, conocido como Unix Epoch).
+                El resultado es un valor de tipo entero que representa la fecha 1 de enero de 1947. Esta es la fecha mínima admisible
+
+                Ejemplo: Si usas echo $fechaMin;, mostraría algo como: -1052284800, que es la representación en segundos de la fecha '1947-01-01' 
+            */
             $fechaMin = strtotime('1947-01-01');
             $fechaMax = strtotime('+5 years');
             $fechaUsuario = strtotime($tmpFecha);
 
             if (!$tmpFecha || $fechaUsuario < $fechaMin || $fechaUsuario > $fechaMax) {
-                $errorFecha = "La fecha de lanzamiento debe estar entre el 1 de enero de 1947 y 5 años en el futuro.";
+                $errorFecha = "La fecha de lanzamiento debe estar entre el 1 de enero de 1947 y 5 años en el futuro. LEA BIEN AMIGO";
             }else{
                 $fecha = $tmpFecha;
             }
@@ -68,14 +75,14 @@
             // Validar PEGI
             $pegisValidos = [3, 7, 12, 16, 18];
             if (!in_array($tmpPegi, $pegisValidos)) {
-                $errorPegi = "Debe seleccionar un PEGI válido (3, 7, 12, 16, 18).";
+                $errorPegi = "Debe seleccionar un PEGI válido (3, 7, 12, 16, 18). LEA BIEN";
             }else{
                 $pegi = $tmpPegi;
             }
 
             // Validar descripción (máximo 255 caracteres)
             if (strlen($tmpDescripcion) > 255 && $tmpDescripcion != "") {
-                $errorDescripcion = "La descripción no puede tener más de 255 caracteres.";
+                $errorDescripcion = "La descripción no puede tener más de 255 caracteres. LEA BIEN";
             }else{
                 $descripcion = $tmpDescripcion;
             }
@@ -91,24 +98,32 @@
             <!-- Título -->
             <div class="mb-3">
                 <label for="titulo" class="form-label">Título:</label>
-                <input type="text" class="form-control" name="titulo" id="titulo" value="<?php echo isset($tmpTitulo) ? htmlspecialchars($tmpTitulo) : ''; ?>" maxlength="80">
+                <input type="text" class="form-control" name="titulo" id="titulo" >
                 <?php if (isset($errorTitulo)) echo "<span class='error'>$errorTitulo</span>"; ?>
             </div>
 
             <!-- Consola -->
             <div class="mb-3">
                 <label class="form-label">Consola:</label><br>
-                <input type="radio" name="consola" value="Nintendo Switch" <?php echo isset($tmpConsola) && $tmpConsola == 'Nintendo Switch' ? 'checked' : ''; ?>> Nintendo Switch
-                <input type="radio" name="consola" value="PS5" <?php echo isset($tmpConsola) && $tmpConsola == 'PS5' ? 'checked' : ''; ?>> PS5
-                <input type="radio" name="consola" value="PS4" <?php echo isset($tmpConsola) && $tmpConsola == 'PS4' ? 'checked' : ''; ?>> PS4
-                <input type="radio" name="consola" value="Xbox Series X/S" <?php echo isset($tmpConsola) && $tmpConsola == 'Xbox Series X/S' ? 'checked' : ''; ?>> Xbox Series X/S
+                <div class="form-check">
+                    <input type="radio" name="consola" value="Nintendo Switch" <?php echo isset($tmpConsola) && $tmpConsola == 'Nintendo Switch' ? 'checked' : ''; ?>> Nintendo Switch
+                </div>
+                <div class="form-check">
+                    <input type="radio" name="consola" value="PS5" <?php echo isset($tmpConsola) && $tmpConsola == 'PS5' ? 'checked' : ''; ?>> PS5
+                </div>
+                <div class="form-check">
+                    <input type="radio" name="consola" value="PS4" <?php echo isset($tmpConsola) && $tmpConsola == 'PS4' ? 'checked' : ''; ?>> PS4
+                </div>
+                <div class="form-check">
+                <input type="radio" name="consola" value="XboxSeries" <?php echo isset($tmpConsola) && $tmpConsola == 'XboxSeries' ? 'checked' : ''; ?>> Xbox Series X/S
+                </div>
                 <?php if (isset($errorConsola)) echo "<span class='error'>$errorConsola</span>"; ?>
             </div>
 
             <!-- Fecha de Lanzamiento -->
             <div class="mb-3">
                 <label for="fecha_lanzamiento" class="form-label">Fecha de Lanzamiento:</label>
-                <input type="date" class="form-control" name="fecha_lanzamiento" id="fecha_lanzamiento" value="<?php echo isset($tmpFecha) ? htmlspecialchars($tmpFecha) : ''; ?>">
+                <input type="date" class="form-control" name="fechaLanzamiento" id="fechaLanzamiento">
                 <?php if (isset($errorFecha)) echo "<span class='error'>$errorFecha</span>"; ?>
             </div>
 
@@ -116,11 +131,12 @@
             <div class="mb-3">
                 <label for="pegi" class="form-label">PEGI:</label>
                 <select class="form-select" name="pegi" id="pegi">
-                    <option value="3" <?php echo isset($tmpPegi) && $tmpPegi == '3' ? 'selected' : ''; ?>>3</option>
-                    <option value="7" <?php echo isset($tmpPegi) && $tmpPegi == '7' ? 'selected' : ''; ?>>7</option>
-                    <option value="12" <?php echo isset($tmpPegi) && $tmpPegi == '12' ? 'selected' : ''; ?>>12</option>
-                    <option value="16" <?php echo isset($tmpPegi) && $tmpPegi == '16' ? 'selected' : ''; ?>>16</option>
-                    <option value="18" <?php echo isset($tmpPegi) && $tmpPegi == '18' ? 'selected' : ''; ?>>18</option>
+                    <option disabled selected hidden>--- ¿Cual es su PEGI? ---</option>
+                    <option value="3" >3</option>
+                    <option value="7" >7</option>
+                    <option value="12" >12</option>
+                    <option value="16" >16</option>
+                    <option value="18" >18</option>
                 </select>
                 <?php if (isset($errorPegi)) echo "<span class='error'>$errorPegi</span>"; ?>
             </div>
@@ -129,7 +145,7 @@
             <div class="mb-3">
                 <label for="descripcion" class="form-label">Descripción (opcional):</label>
                 <!-- Podría poner maxlength="255"-->
-                <textarea class="form-control" name="descripcion" id="descripcion" rows="4"><?php echo isset($tmpDescripcion) ? htmlspecialchars($tmpDescripcion) : ''; ?></textarea>
+                <textarea class="form-control" name="descripcion" id="descripcion" rows="4"></textarea>
                 <?php if (isset($errorDescripcion)) echo "<span class='error'>$errorDescripcion</span>"; ?>
             </div>
 
@@ -141,8 +157,14 @@
             //No sé si añadir:  && isset($descripcion)
             if (isset($titulo) && isset($consola) && isset($fecha) && isset($pegi)) {
                 echo "<div class='container mt-4'>";
-                echo "<h4>Formulario enviado correctamente</h4>";
-                echo "<ul><li>Título: $titulo</li><li>Consola: $consola</li><li>Fecha de Lanzamiento: $fecha</li><li>PEGI: $pegi</li><li>Descripción: $descripcion</li></ul>";
+                echo "<h4>Bieeeeeeeeeen......campeón sabe leer</h4>";
+                echo "<ul>
+                            <li>Título: $titulo</li>
+                            <li>Consola: $consola</li>
+                            <li>Fecha de Lanzamiento: $fecha</li>
+                            <li>PEGI: $pegi</li>
+                            <li>Descripción: $descripcion</li>
+                     </ul>";
                 echo "</div>";
             }
         ?>
