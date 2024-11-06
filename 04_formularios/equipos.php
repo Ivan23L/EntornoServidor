@@ -29,15 +29,26 @@
 </head>
 <body>
     <?php
+        function depurar($entrada){
+            $salida = htmlspecialchars($entrada);
+            /* trim quita los espacios a los laterales */
+            $salida = trim($salida);
+            /* stripslashes quita barras laterales /\ que pueden dar problemas*/
+            $salida = stripslashes($salida);
+            $salida = preg_replace('!\s+!', ' ', $salida);
+            return $salida;
+        }
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Recibir los datos del formulario
-            $tmpNombre = trim(htmlspecialchars($_POST['nombre']));
-            $tmpIniciales = $_POST['iniciales'];
-            $tmpCiudad = $_POST['ciudad'];
+            $tmpNombre = depurar($_POST['nombre']);
+            $tmpIniciales = depurar($_POST['iniciales']);
+            $tmpCiudad = depurar($_POST['ciudad']);
             $tmpTitulo = $_POST['titulo'];
-            $tmpDivision = $_POST['divion'];
+            $tmpDivision = $_POST['division'];
             $tmpFecha = $_POST['fechaFundacion'];
-            $tmpNumero = $_POST['numero'];
+            $tmpNumeroJugadores = $_POST['numero'];
 
             // Validar nombre
             if($tmpNombre == ""){
@@ -45,7 +56,7 @@
             }else{
                 $patron = "/^[a-zA-Z áéíóúÁÉÍÓÚñÑ.]+$/";    
                 if(!preg_match($patron, $tmpNombre)){
-                    $errorNombre = "Solo se admiten tildes, la ñ, espacios en blanco y puntos.";
+                    $errorNombre = "Solo se admiten letras (+tildes), la ñ, espacios en blanco y puntos.";
                 }else{
                     $nombre = ucwords(strtolower($tmpNombre));
                 }
@@ -59,7 +70,7 @@
                 if(!preg_match($patron, $tmpIniciales)){
                     $errorInicial = "Solo se admiten letras y deben ser 3";
                 }else{
-                    $iniciales = ucwords(strtolower($tmpIniciales));
+                    $iniciales = strtoupper($tmpIniciales);
                 }
             }
 
@@ -79,7 +90,7 @@
             if ($tmpTitulo == "") {
                 $errorTitulo = "Debes decirme si has ganado o no AMIGO. ME ENFADAS";
             }else{
-                $titulo = $tmpTitulo;
+                $titulo = $tmpDivision;
             }
 
             // Validar División
@@ -90,10 +101,65 @@
                 $division = $tmpDivision;
             }
             
-            // Validar fecha de fundación
+            // Validar fecha de fundación (entre hoy y el 18 de diciembre de 1889)
+            if($tmpFecha == '') {
+                $errorFecha = "La fecha de fundación es obligatoria";
+            } else {
+                $patron = "/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/";
+                if(!preg_match($patron, $tmpFecha)) {
+                    $errorFecha = "Formato de fecha incorrecto";
+                } else {
+                    $fechaActual = date("Y-m-d");
+                    list($anioActual,$mesActual,$diaActual) = explode('-',$fechaActual);
+                    list($anio,$mes,$dia) = explode('-',$tmpFecha);
 
-            // Validar número de jugadores
-            
+                    
+                    if($anioActual == $anio) {
+                        if($mesActual == $mes){
+                            if($diaActual == $dia){
+                                $fecha = $tmpFecha;
+                            }elseif($diaActual < $dia){
+                                $errorFecha = "No puede ser amigo estás locoOoaooO";
+                            }else{
+                                $fecha = $tmpFecha;
+                            }
+                        }elseif($mesActual < $mes){
+                            $errorFecha = "mes FUTURO????estás bien??? amigo un poco locoo";
+                        }else{
+                            $fecha = $tmpFecha;
+                        }
+                    } elseif($anio > $anioActual){
+                        $errorFecha = "No puede ser del futuro ";
+                    }elseif($anio <= 1889) {
+                        if($anio == 1889) {
+                            if($mes == 12){
+                                if($dia < 18){
+                                    $errorFecha = "Noo puede ser anterior al 18 de diciembre de 1889 amigo";
+                                }else{
+                                    $fecha = $tmpFecha;
+                                }
+                            }else{
+                                $errorFecha = "No puede ser anterior a diciembre de 1889";
+                            }
+                        }else{
+                            $errorFecha = "No puede ser anterior a 1889";
+                        }
+                    }else{
+                        $fecha = $tmpFecha;
+                    }
+                }   
+            }
+
+            // Validar Número de jugadores (entre 26 y 32)
+            if($tmpNumeroJugadores == ""){
+                $errorNumerojugadores = "¿Cuántos jugadores hay? es obligatorio";
+            }else{
+                if(($tmpNumeroJugadores < 26) || ($tmpNumeroJugadores > 32)){
+                    $errorNumerojugadores = "Tiene que haber entre 26 y 32 amigooo.";
+                }else{
+                    $numeroJugadores = $tmpNumeroJugadores;
+                }
+            }
 
         }    
     ?>
@@ -136,7 +202,7 @@
 
             <!-- División -->
             <div class="mb-3">
-                <label for="division" class="form-label">Inicial:</label>
+                <label for="division" class="form-label">División:</label>
                 <select class="form-select" name="division" id="division">
                     <option disabled selected hidden>--- ¿Cual es su división? ---</option>
                     <option value="Liga EA Sports" >Liga EA Sports</option>
@@ -163,6 +229,33 @@
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
     </div>
+    
+    <!-- Mostrar si se ha recibido todo bien por pantalla (MODO CHULO AMIGO) -->
+    <?php
+    if(isset($nombre) && isset($iniciales) && isset($ciudad) && isset($titulo) && isset($division) && isset($fecha) && isset($numeroJugadores)){
+    ?>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header text-center bg-primary text-white">
+                <h1>Se ha recibido esto, amigo:</h1>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Nombre del equipo:</strong> <?php echo "$nombre"; ?></li>
+                    <li class="list-group-item"><strong>Iniciales del club:</strong> <?php echo "$iniciales"; ?></li>
+                    <li class="list-group-item"><strong>Ciudad del equipo:</strong> <?php echo "$ciudad"; ?></li>
+                    <li class="list-group-item"><strong>Título conseguido:</strong> <?php echo "$titulo"; ?></li>
+                    <li class="list-group-item"><strong>División:</strong> <?php echo "$division"; ?></li>
+                    <li class="list-group-item"><strong>Fecha de fundación:</strong> <?php echo "$fecha"; ?></li>
+                    <li class="list-group-item"><strong>Jugadores disponibles:</strong> <?php echo "$numeroJugadores"; ?></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <?php 
+        } 
+    ?>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

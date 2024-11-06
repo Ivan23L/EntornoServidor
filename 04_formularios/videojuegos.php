@@ -55,7 +55,7 @@
             $tmpConsola = $_POST['consola'];
             $tmpFecha = $_POST['fechaLanzamiento'];
             $tmpPegi = $_POST['pegi'];
-            $tmpDescripcion = isset($_POST['descripcion']) ? trim(htmlspecialchars($_POST['descripcion'])) : '';
+            $tmpDescripcion = isset($_POST['descripcion']) ? depurar(($_POST['descripcion'])) : '';
 
             // Validar título
             if ($tmpTitulo == "" || strlen($tmpTitulo) < 1 || strlen($tmpTitulo) > 80) {
