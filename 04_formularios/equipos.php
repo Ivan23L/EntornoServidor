@@ -21,7 +21,7 @@
             color: red;
         }
         .container{
-            border:1px solid chocolate;
+            border:5px solid darkblue;
             margin:25px;
             padding:25px;
         }
@@ -90,7 +90,7 @@
             if ($tmpTitulo == "") {
                 $errorTitulo = "Debes decirme si has ganado o no AMIGO. ME ENFADAS";
             }else{
-                $titulo = $tmpDivision;
+                $titulo = $tmpTitulo;
             }
 
             // Validar División
