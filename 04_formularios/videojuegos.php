@@ -10,6 +10,12 @@
         .error{
             color: red;
         }
+        .container{
+            border:1px solid chocolate;
+            margin:25px;
+            padding:25px;
+        }
+        
     </style>
     <!-- 
         Realiza un formulario php sobre videojuegos que contenga:
@@ -32,27 +38,49 @@
 </head>
 <body>
     <?php
+        function depurar($entrada){
+            $salida = htmlspecialchars($entrada);
+            /* trim quita los espacios a los laterales */
+            $salida = trim($salida);
+            /* stripslashes quita barras laterales /\ que pueden dar problemas*/
+            $salida = stripslashes($salida);
+            $salida = preg_replace('!\s+!', ' ', $salida);
+            return $salida;
+        }
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Recibir los datos del formulario
-            $tmpTitulo = trim(htmlspecialchars($_POST['titulo']));
+            $tmpTitulo =depurar($_POST['titulo']);
             $tmpConsola = $_POST['consola'];
             $tmpFecha = $_POST['fechaLanzamiento'];
             $tmpPegi = $_POST['pegi'];
             $tmpDescripcion = isset($_POST['descripcion']) ? trim(htmlspecialchars($_POST['descripcion'])) : '';
 
             // Validar título
-            if (empty($tmpTitulo) || strlen($tmpTitulo) < 1 || strlen($tmpTitulo) > 80) {
+            if ($tmpTitulo == "" || strlen($tmpTitulo) < 1 || strlen($tmpTitulo) > 80) {
                 $errorTitulo = "El título debe tener entre 1 y 80 caracteres.";
             }else{
                 $titulo = $tmpTitulo;
             }
 
             // Validar consola
-            if (empty($tmpConsola)) {
+            if ($tmpConsola == "") {
                 $errorConsola = "Debe seleccionar una consola. ME ENFADAS";
             }else{
                 $consola = $tmpConsola;
             }
+
+            /* 
+            OTRA FORMA IGUAL 
+            $consolasValidas = ["PS4", "PS5", "Nintendo Switch", "Xbox Series X/S"];
+            if (!in_array($tmpConsola, $consolasValidas)) {
+                $errorConsola = "ME ENFADAS MUCHO AMIGO";
+            }else{
+                $consola = $tmpConsola;
+            } 
+            
+            */
 
             // Validar fecha de lanzamiento
             /*  
@@ -66,10 +94,15 @@
             $fechaMax = strtotime('+5 years');
             $fechaUsuario = strtotime($tmpFecha);
 
-            if (!$tmpFecha || $fechaUsuario < $fechaMin || $fechaUsuario > $fechaMax) {
+            if ($tmpFecha == "" || $fechaUsuario < $fechaMin || $fechaUsuario > $fechaMax) {
                 $errorFecha = "La fecha de lanzamiento debe estar entre el 1 de enero de 1947 y 5 años en el futuro. LEA BIEN AMIGO";
             }else{
-                $fecha = $tmpFecha;
+                $patron = "/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/";
+                if(!preg_match($patron, $tmpFecha)){
+                    $errorFecha = "Formato de fecha incorrecto";
+                }else{
+                    $fecha = $tmpFecha;
+                }
             }
 
             // Validar PEGI
@@ -106,16 +139,16 @@
             <div class="mb-3">
                 <label class="form-label">Consola:</label><br>
                 <div class="form-check">
-                    <input type="radio" name="consola" value="Nintendo Switch" <?php echo isset($tmpConsola) && $tmpConsola == 'Nintendo Switch' ? 'checked' : ''; ?>> Nintendo Switch
+                    <input class = "form-check-input" type="radio" name="consola" value="Nintendo Switch" <?php echo isset($tmpConsola) && $tmpConsola == 'Nintendo Switch' ? 'checked' : ''; ?>> Nintendo Switch
                 </div>
                 <div class="form-check">
-                    <input type="radio" name="consola" value="PS5" <?php echo isset($tmpConsola) && $tmpConsola == 'PS5' ? 'checked' : ''; ?>> PS5
+                    <input class = "form-check-input" type="radio" name="consola" value="PS5" <?php echo isset($tmpConsola) && $tmpConsola == 'PS5' ? 'checked' : ''; ?>> PS5
                 </div>
                 <div class="form-check">
-                    <input type="radio" name="consola" value="PS4" <?php echo isset($tmpConsola) && $tmpConsola == 'PS4' ? 'checked' : ''; ?>> PS4
+                    <input class = "form-check-input" type="radio" name="consola" value="PS4" <?php echo isset($tmpConsola) && $tmpConsola == 'PS4' ? 'checked' : ''; ?>> PS4
                 </div>
                 <div class="form-check">
-                <input type="radio" name="consola" value="XboxSeries" <?php echo isset($tmpConsola) && $tmpConsola == 'XboxSeries' ? 'checked' : ''; ?>> Xbox Series X/S
+                <input class = "form-check-input" type="radio" name="consola" value="Xbox Series X/S" <?php echo isset($tmpConsola) && $tmpConsola == 'XboxSeries' ? 'checked' : ''; ?>> Xbox Series X/S
                 </div>
                 <?php if (isset($errorConsola)) echo "<span class='error'>$errorConsola</span>"; ?>
             </div>
@@ -152,8 +185,9 @@
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
 
-        <?php
-            // Si no hay errores, mostrar los datos enviados
+        
+            <!-- OTRA FORMA DE HACER ESTO
+             // Si no hay errores, mostrar los datos enviados
             //No sé si añadir:  && isset($descripcion)
             if (isset($titulo) && isset($consola) && isset($fecha) && isset($pegi)) {
                 echo "<div class='container mt-4'>";
@@ -166,10 +200,22 @@
                             <li>Descripción: $descripcion</li>
                      </ul>";
                 echo "</div>";
-            }
+            } -->
+    </div>
+    <?php
+        if(isset($titulo) && isset($consola) && isset($fecha) && isset($pegi)){
+    ?>
+    <div class="container mt-5">
+            <h1>Se ha recibido esto amigo:</h1>
+            <h5>Titulo: <?php echo "$titulo" ?></h5>
+            <h5>Consola: <?php echo "$consola" ?></h5>
+            <h5>Fecha de lanzamiento: <?php echo "$fecha" ?></h5>
+            <h5>PEGI: <?php echo "$pegi" ?></h5>
+            <h5>Descripción: <?php echo "$descripcion" ?></h5>
+        <?php 
+            } 
         ?>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
