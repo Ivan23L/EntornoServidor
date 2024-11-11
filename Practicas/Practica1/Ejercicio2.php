@@ -52,7 +52,7 @@
         }
         $media1 += ($array1[$i]);
     }
-    $media1 = $media1 /10;
+    $media1 = $media1 / count($array1);
     echo "<br><h3>La media del array1 es: ".$media1."<br> El valor mayor en este array es: ".$numeroMayor1."<br>Mientras que el número menor es: ".$numeroMenor1."</h3><br>";
 
 
@@ -80,10 +80,8 @@
         }
         $media2 += ($array2[$i]);
     }
-    $media2 = $media2/10;
-    echo "<br><h3>La media del array1 es: ".$media2."<br> El valor mayor en este array es: ".$numeroMayor2."<br>Mientras que el número menor es: ".$numeroMenor2."</h3><br>";
-
-    
+    $media2 = $media2/count($array2);
+    echo "<br><h3>La media del array2 es: ".$media2."<br> El valor mayor en este array es: ".$numeroMayor2."<br>Mientras que el número menor es: ".$numeroMenor2."</h3><br>";
     ?>
 </body>
 </html>

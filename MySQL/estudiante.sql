@@ -1,3 +1,9 @@
+/* 
+CRUD FUNCIONES BÁSICAS PARA BASES DE DATOS
+-CREATE permite crear una tabla
+-READ permite leer 
+-
+*/
 USE animes_bd;	-- establece conexion con la base de datos
 SELECT * FROM animes; -- selecciona todo de todos los animes 
 /*INTENTAR NO PONER COMENTARIOS A LA HORA DE EJECUTAR EL SCRIPT*/
@@ -45,7 +51,3 @@ Si alguna de sus partes falla, todo falla y se deshacen los cambios
 	UPDATE accounts SET saldo -= 30 WHERE id = "1331";
     UPDATE accounts SET saldo += 30 WHERE id = "012";
 */
-
-
-
-

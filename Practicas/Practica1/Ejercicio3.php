@@ -32,20 +32,20 @@ $convertir = $_POST["convertir"];
 $sumatorio = 0;
 $factorial = 1;
 
-switch($convertir){
-    case 'factorial':
-        for($i=1;$i<$numero+1;$i++){
-            $factorial *= $i;
-        }
-        echo"<h3>El factorial de $numero es $factorial</h3>";
-        break;
-    case 'sumatorio':
-        for($i=0;$i<$numero;$i++){
-            $sumatorio += $numero;
-        }
-        echo"<h3>El sumatorio de $numero es $sumatorio</h3>";
-        break;
-}
+    switch($convertir){
+        case 'factorial':
+            for($i=1;$i<$numero+1;$i++){
+                $factorial *= $i;
+            }
+            echo"<h3>El factorial de $numero es $factorial</h3>";
+            break;
+        case 'sumatorio':
+            for($i=0;$i<$numero+1;$i++){
+                $sumatorio += $i;
+            }
+            echo"<h3>El sumatorio de $numero es $sumatorio</h3>";
+            break;
+    }
 }
 ?>
 </body>
