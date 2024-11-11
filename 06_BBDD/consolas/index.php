@@ -49,8 +49,8 @@
                     echo "<td class='table-info'>" . $fila["fabricante"] . "</td>";
                     echo "<td class='table-info'>" . $fila["generacion"] . "</td>";
                     //null == '' ES VERDADERO (quiere decir que si es null)
-                    //null == '' ES FALSO (quiere decir que no es null)
-                    if($fila["unidades_vendidas"]==""){
+                    //null === '' ES FALSO (quiere decir que no es null)
+                    if($fila["unidades_vendidas"] === NULL){
                         echo"<td class='table-info'>No hay ventas</td>";
                     }else{
                         echo "<td class='table-info'>" . $fila["unidades_vendidas"] . "</td>";
