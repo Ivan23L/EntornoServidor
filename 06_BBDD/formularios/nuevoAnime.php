@@ -20,6 +20,7 @@
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );   
         require('../../05_funciones/depurar.php');
+        require('../animes/conexion.php');
     ?>
     <!-- 
     El formulario de los animes lo crearemos en un fichero llamado “nuevo_anime.php” y tendrá los siguientes campos:
@@ -129,7 +130,7 @@
             <!-- Número de temporadas que tiene -->
             <div class="mb-3">
                 <label for="numeroTemporadas" class="form-label">Número de temporadas del anime:</label>
-                <input type="number" min="1" max="99" class="form-control" name="numeroTemporadas" id="numeroTemporadas" >
+                <input type="text" class="form-control" name="numeroTemporadas" id="numeroTemporadas" >
                 <?php if (isset($errorNumTemporadas)) echo "<span class='error'>$errorNumTemporadas</span>"; ?>
             </div>
 
@@ -140,22 +141,27 @@
     <?php
     if(isset($titulo) && isset($nombreEstudio) && isset($numeroTemporadas)){
     ?>
-    <div class="container mt-5">
-        <div class="card">
-            <div class="card-header text-center bg-primary text-white">
-                <h1>Se ha recibido esto correctamente, amigo:</h1>
-            </div>
-            <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group-item"><strong>Título del anime:</strong> <?php echo "$titulo"; ?></li>
-                    <li class="list-group-item"><strong>Nombre del estudio al que pertenece:</strong> <?php echo "$nombreEstudio"; ?></li>
-                    <li class="list-group-item"><strong>Número de temporadas total:</strong> <?php echo "$numeroTemporadas"; ?></li>
-                </ul>
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-header text-center bg-primary text-white">
+                    <h1>Se ha añadido esto correctamente a animes, amigo:</h1>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Título del anime:</strong> <?php echo "$titulo"; ?></li>
+                        <li class="list-group-item"><strong>Nombre del estudio al que pertenece:</strong> <?php echo "$nombreEstudio"; ?></li>
+                        <li class="list-group-item"><strong>Año de estreno del anime:</strong> <?php echo "$anioEstreno"; ?></li>
+                        <li class="list-group-item"><strong>Número de temporadas total:</strong> <?php echo "$numeroTemporadas"; ?></li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
-    <?php 
-        } 
+    <?php
+        //Añado los datos a la base de datos
+        $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas)
+            VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas')";
+        $_conexion -> query($sql);
+    } 
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
