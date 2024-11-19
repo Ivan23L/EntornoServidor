@@ -58,8 +58,8 @@
         </thead>
         <tbody>
             <?php
-                //Trata el objeto resultado como si fuera un array asociativo, y mientras haya filas fetch_assoc() 
-                //los guardará ahora sí en un array 
+                //Trata el objeto resultado como si fuera un array asociativo, y mientras haya filas, 
+                //fetch_assoc() los guardará ahora sí en un array 
                 while($fila = $resultado -> fetch_assoc()){
                     //Cada valor que devuleve tiene dos claves, tanto el nombre de la columna, como el valor que le corresponde a la columna
                     echo"<tr>";

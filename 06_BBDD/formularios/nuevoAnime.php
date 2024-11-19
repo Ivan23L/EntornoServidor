@@ -144,7 +144,7 @@
         <div class="container mt-5">
             <div class="card">
                 <div class="card-header text-center bg-primary text-white">
-                    <h1>Se ha añadido esto correctamente a animes, amigo:</h1>
+                    <h1>Se ha añadido esto correctamente a Animes, amigo:</h1>
                 </div>
                 <div class="card-body">
                     <ul class="list-group">

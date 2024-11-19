@@ -46,6 +46,25 @@
             }else{
                 $ciudad = $tmpCiudad;
             }
+
+            // Validar año de fundación (obligatorio)
+            $tmpAnioFundacion = depurar($_POST['anioFundacion']);
+            $anioActual = date("Y");
+            $anioFundacionMaximo = $anioActual+5;
+            // Verificar que el año esté en el rango permitido
+            if($tmpAnioFundacion == ''){
+                $errorAnio = "Es obligatorio";
+            }else{
+                if(filter_var($tmpAnioFundacion, FILTER_VALIDATE_INT) === FALSE){
+                    $errorAnio = "Debe ser un número entero.";
+                }else{
+                    if(($tmpAnioFundacion < 1960)||($tmpAnioEstreno > $anioFundacionMaximo)){
+                        $errorAnio = "No puede ser menor a 1960 ni mayor que ".$anioFundacionMaximo." este último incluido.";
+                    }else{
+                        $anioFundacion = $tmpAnioFundacion;
+                    }
+                }
+            }
         }
     ?>
         
@@ -65,7 +84,14 @@
                 <label for="ciudad" class="form-label">Ciudad a la que pertenece:</label>
                 <input type="text" class="form-control" name="ciudad" id="ciudad" >
                 <?php if (isset($errorCiudad)) echo "<span class='error'>$errorCiudad</span>"; ?>
-            </div>            
+            </div>  
+            
+            <!-- Año de fundación -->
+            <div class="mb-3">
+                <label for="anioFundacion" class="form-label">Año de estreno:</label>
+                <input type="text" class="form-control" name="anioFundacion" id="anioFundacion" >
+                <?php if (isset($errorAnio)) echo "<span class='error'>$errorAnio</span>"; ?>
+            </div>
 
             <button type="submit" class="btn btn-primary">Añadir Estudio</button>
         </form>
@@ -78,7 +104,7 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-header text-center bg-primary text-white">
-                <h1>Se ha recibido esto correctamente, amigo:</h1>
+                <h1>Se ha añadido esto correctamente a Estudios, amigo:</h1>
             </div>
             <div class="card-body">
                 <ul class="list-group">
@@ -89,7 +115,11 @@
         </div>
     </div>
     <?php 
-        } 
+    //Añado los datos a la base de datos
+        $sql = "INSERT INTO estudios (nombre_estudio, ciudad, anno_fundacion)
+            VALUES ('$nombreEstudio','$ciudad','$anioFundacion')";
+        $_conexion -> query($sql);
+    } 
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
