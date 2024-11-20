@@ -20,6 +20,7 @@
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );   
         require('../../05_funciones/depurar.php');
+        require('../animes/conexion.php');
     ?>
     <!-- 
     El formulario de los estudios lo crearemos en un fichero llamado “nuevo_estudio.php” y tendrá los siguientes campos:
@@ -88,7 +89,7 @@
             
             <!-- Año de fundación -->
             <div class="mb-3">
-                <label for="anioFundacion" class="form-label">Año de estreno:</label>
+                <label for="anioFundacion" class="form-label">Año de fundación:</label>
                 <input type="text" class="form-control" name="anioFundacion" id="anioFundacion" >
                 <?php if (isset($errorAnio)) echo "<span class='error'>$errorAnio</span>"; ?>
             </div>
@@ -99,7 +100,7 @@
     </div>
     
     <?php
-    if(isset($nombreEstudio) && isset($ciudad)){
+    if(isset($nombreEstudio) && isset($ciudad) && isset($anioFundacion)){
     ?>
     <div class="container mt-5">
         <div class="card">
@@ -110,6 +111,7 @@
                 <ul class="list-group">
                     <li class="list-group-item"><strong>Nombre del estudio:</strong> <?php echo "$nombreEstudio"; ?></li>
                     <li class="list-group-item"><strong>Ciudad:</strong> <?php echo "$ciudad"; ?></li>
+                    <li class="list-group-item"><strong>Año de fundación:</strong> <?php echo "$anioFundacion"; ?></li>
                 </ul>
             </div>
         </div>

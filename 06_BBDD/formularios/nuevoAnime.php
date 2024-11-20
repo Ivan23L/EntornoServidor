@@ -29,7 +29,6 @@
         Los option del select se crearán de manera dinámica en un bucle recorriendo dicho array y creando un option por cada valor del mismo. 
         -anno_estreno: Es opcional y se elegirá mediante un campo de texto. Sólo aceptará valores numéricos entre 1960 y dentro de 5 años (inclusive). 
         -num_temporadas: Es obligatorio y será un valor numérico entre 1 y 99.
- 
     -->
 </head>
 <body>
@@ -40,6 +39,7 @@
 
         // Validación de formulario cuando se envía
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            
             // Validar título
             $tmpTitulo = depurar(ucwords(strtolower($_POST['titulo'])));
             if ($tmpTitulo == ''){
@@ -94,13 +94,37 @@
                     }
                 }
             } 
+
+            //$_FILES es un array BIDIMENSIONAL, mientras que $_POST es un array UNIDIMENSIONAL
+            //var_dump($_FILES("imagen"));
+            $imagen = $_FILES["imagen"]["name"];
+            $ubicacionTemporal = $_FILES["imagen"]["tmp_name"];
+            $ubicacionFinal = "./../animes/imagenes/$imagen";
+
+
+            move_uploaded_file($ubicacionTemporal, $ubicacionFinal);
+
+
+
+            //Añado los datos a la base de datos
+            $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
+                VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas', '$ubicacionFinal')";
+            $_conexion -> query($sql);
+        
+
+            $sql = "SELECT * FROM estudios ORDER BY nombre_estudio";
+            $resultado = $_conexion -> query($sql);
+            $estudios = [];
+            while($fila = $resultado -> fetch_assoc()){
+                array_push($estudios, $fila["nombre_estudio"]);
+            }
         }
     ?>
         
     <div class="container mt-5">
         <h1>Formulario para nuevos Animes</h1>
-
-        <form class="col-6" action="" method="post">
+        <!-- enctype="multipart/form-data" para que el formulario pueda leer imagenes -->
+        <form class="col-6" action="" method="post" enctype="multipart/form-data">
             <!-- Título del anime -->
             <div class="mb-3">
                 <label for="titulo" class="form-label">Título del anime:</label>
@@ -111,7 +135,7 @@
             <!-- Nombre del estudio -->
             <div class="mb-3">
                 <select id="nombreEstudio" name="nombreEstudio" class="form-select form-select-lg">
-                    <option value="">Selecciona un estudio</option>
+                    <option value="">---Selecciona un estudio---</option>
                     <?php foreach ($estudios as $estudio): ?>
                         <!-- Ambas formas php las interpreta de la misma manera, está creando un option con el valor $estudio e imprimiendolo en el select -->
                         <option value="<?php echo $estudio;?>"><?= $estudio ?></option>
@@ -134,9 +158,18 @@
                 <?php if (isset($errorNumTemporadas)) echo "<span class='error'>$errorNumTemporadas</span>"; ?>
             </div>
 
-            <button type="submit" class="btn btn-primary">Añadir anime a la BBDD</button>
-        </form>
+            <!-- Campo para añadir imagen al anime -->
+            <div class="mb-3">
+                <label for="imagen" class="form-label">Imagen</label>
+                <input type="file" class="form-control" name="imagen" id="imagen" >
+                <?php if (isset($errorImagen)) echo "<span class='error'>$errorImagen</span>"; ?>
+            </div>
 
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Añadir anime a la BBDD</button>
+                <a href="../animes/index.php" class="btn btn-secondary">Volver</a>
+            </div>
+        </form>
     </div>
     <?php
     if(isset($titulo) && isset($nombreEstudio) && isset($numeroTemporadas)){
@@ -152,16 +185,13 @@
                         <li class="list-group-item"><strong>Nombre del estudio al que pertenece:</strong> <?php echo "$nombreEstudio"; ?></li>
                         <li class="list-group-item"><strong>Año de estreno del anime:</strong> <?php echo "$anioEstreno"; ?></li>
                         <li class="list-group-item"><strong>Número de temporadas total:</strong> <?php echo "$numeroTemporadas"; ?></li>
+                        <li class="list-group-item"><strong>La imagen:</strong> <?php echo "$ubicacionFinal"; ?></li>
                     </ul>
                 </div>
             </div>
         </div>
     <?php
-        //Añado los datos a la base de datos
-        $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas)
-            VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas')";
-        $_conexion -> query($sql);
-    } 
+    }
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

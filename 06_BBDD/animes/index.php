@@ -47,6 +47,7 @@
 
         $resultado = $_conexion -> query($sql);
     ?>
+    <a href="../formularios/nuevoAnime.php" class="btn btn-secondary">Crear nuevo anime</a>
     <table class = "table table-bordered table-light table-hover border-secondary text-center">
         <thead class=" table-danger">
             <tr>
@@ -54,6 +55,7 @@
                 <th>Estudio</th>
                 <th>Año</th>
                 <th>Número de temporadas</th>
+                <th>Imagen</th>
             </tr>
         </thead>
         <tbody>
@@ -67,6 +69,11 @@
                     echo "<td class='table-success'>" . $fila["nombre_estudio"] . "</td>";
                     echo "<td class='table-success'>" . $fila["anno_estreno"] . "</td>";
                     echo "<td class='table-info'>" . $fila["num_temporadas"] . "</td>";
+                    ?>
+                    <td>
+                        <img width="100" height="150" src="<?php echo $fila["imagen"]?>">
+                    </td>
+                    <?php
                     echo"</tr>";
                 }
             ?>
