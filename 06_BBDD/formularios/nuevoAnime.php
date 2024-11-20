@@ -92,14 +92,28 @@
                 }
             } 
 
+            //var_dump($_FILES["imagen"]); muestra información detallada sobre la variable en este caso imagen
+            /*  array(5) {
+                    ["name"] => string(10) "foto.jpg"           nombre original del archivo
+
+                    ["type"] => string(10) "image/jpeg"         tipo de contenido del archivo, tipo MIME
+
+                    ["tmp_name"] => string(14) "/tmp/php1234"   ruta temporal en el servidor donde PHP almacena el archivo
+
+                    ["error"] => int(0)                         (0) → No hay errores.   (1) → El archivo excede el límite en phpini  (2) → El archivo excede el límite del formulario.  
+                    (3) → El archivo fue parcialmente cargado.     (4) → No se seleccionó ningún archivo.   (6) → No se encontró un directorio temporal.    
+                    (7) → No se pudo escribir el archivo en el disco.      (8) → Una extensión de PHP detuvo la carga del archivo.
+                    
+                    ["size"] => int(2048)                       tamaño del archivo en bytes   1byte=8bits                   
+                }
+            */
             //$_FILES es un array BIDIMENSIONAL, mientras que $_POST es un array UNIDIMENSIONAL
-            //var_dump($_FILES("imagen"));
             $imagen = $_FILES["imagen"]["name"];
             $ubicacionTemporal = $_FILES["imagen"]["tmp_name"];
             $ubicacionFinal = "./../animes/imagenes/$imagen";
             $imagenTipo = $_FILES["imagen"]["type"];
 
-
+            //mueve el archivo que se ha cargado de una ubicación a otra
             move_uploaded_file($ubicacionTemporal, $ubicacionFinal);
 
 
@@ -108,8 +122,6 @@
             $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
                 VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas', '$ubicacionFinal')";
             $_conexion -> query($sql);
-
-            
         }
     ?>
         
@@ -132,6 +144,8 @@
                     $sql = "SELECT nombre_estudio FROM estudios";
                     $resultado = $_conexion -> query($sql);
                     $estudios = [];
+                    /* fetch_assoc() devuelve una fila de resultados como un array asociativo. Esto significa que podrás acceder
+                    a cada columna de la fila por su nombre */
                     while($fila = $resultado -> fetch_assoc()){
                         array_push($estudios, $fila["nombre_estudio"]);
                     } 
