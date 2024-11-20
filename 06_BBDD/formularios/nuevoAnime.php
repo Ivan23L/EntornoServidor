@@ -122,6 +122,7 @@
             $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
                 VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas', '$ubicacionFinal')";
             $_conexion -> query($sql);
+
         }
     ?>
         
@@ -185,7 +186,7 @@
         </form>
     </div>
     <?php
-    if(isset($titulo) && isset($nombreEstudio) && isset($numeroTemporadas)){
+    if(isset($titulo) && isset($nombreEstudio) && isset($anioEstreno) && isset($numeroTemporadas) && isset($ubicacionFinal)){
     ?>
         <div class="container mt-5">
             <div class="card">
