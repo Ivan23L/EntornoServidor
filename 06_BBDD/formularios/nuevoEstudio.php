@@ -59,7 +59,7 @@
                 if(filter_var($tmpAnioFundacion, FILTER_VALIDATE_INT) === FALSE){
                     $errorAnio = "Debe ser un número entero.";
                 }else{
-                    if(($tmpAnioFundacion < 1960)||($tmpAnioEstreno > $anioFundacionMaximo)){
+                    if(($tmpAnioFundacion < 1960)||($tmpAnioFundacion > $anioFundacionMaximo)){
                         $errorAnio = "No puede ser menor a 1960 ni mayor que ".$anioFundacionMaximo." este último incluido.";
                     }else{
                         $anioFundacion = $tmpAnioFundacion;

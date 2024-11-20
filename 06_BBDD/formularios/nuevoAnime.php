@@ -34,9 +34,6 @@
 <body>
     
     <?php
-        // Array de estudios de anime
-        $estudios = ['Studio Bind', 'Wit Studio', 'ufotable', 'Toei Animation', 'Bones'];
-
         // Validación de formulario cuando se envía
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
@@ -100,6 +97,7 @@
             $imagen = $_FILES["imagen"]["name"];
             $ubicacionTemporal = $_FILES["imagen"]["tmp_name"];
             $ubicacionFinal = "./../animes/imagenes/$imagen";
+            $imagenTipo = $_FILES["imagen"]["type"];
 
 
             move_uploaded_file($ubicacionTemporal, $ubicacionFinal);
@@ -110,14 +108,8 @@
             $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
                 VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas', '$ubicacionFinal')";
             $_conexion -> query($sql);
-        
 
-            $sql = "SELECT * FROM estudios ORDER BY nombre_estudio";
-            $resultado = $_conexion -> query($sql);
-            $estudios = [];
-            while($fila = $resultado -> fetch_assoc()){
-                array_push($estudios, $fila["nombre_estudio"]);
-            }
+            
         }
     ?>
         
@@ -136,7 +128,14 @@
             <div class="mb-3">
                 <select id="nombreEstudio" name="nombreEstudio" class="form-select form-select-lg">
                     <option value="">---Selecciona un estudio---</option>
-                    <?php foreach ($estudios as $estudio): ?>
+                    <?php
+                    $sql = "SELECT nombre_estudio FROM estudios";
+                    $resultado = $_conexion -> query($sql);
+                    $estudios = [];
+                    while($fila = $resultado -> fetch_assoc()){
+                        array_push($estudios, $fila["nombre_estudio"]);
+                    } 
+                    foreach ($estudios as $estudio): ?>
                         <!-- Ambas formas php las interpreta de la misma manera, está creando un option con el valor $estudio e imprimiendolo en el select -->
                         <option value="<?php echo $estudio;?>"><?= $estudio ?></option>
                     <?php endforeach; ?>
@@ -167,7 +166,7 @@
 
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Añadir anime a la BBDD</button>
-                <a href="../animes/index.php" class="btn btn-secondary">Volver</a>
+                <a href="../animes/index.php" class="btn btn-secondary">Volver al index</a>
             </div>
         </form>
     </div>
