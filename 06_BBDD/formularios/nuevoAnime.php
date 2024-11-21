@@ -116,13 +116,20 @@
             //mueve el archivo que se ha cargado de una ubicación a otra
             move_uploaded_file($ubicacionTemporal, $ubicacionFinal);
 
-
-
             //Añado los datos a la base de datos
-            $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
-                VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas', '$ubicacionFinal')";
-            $_conexion -> query($sql);
-
+            if(isset($titulo) && isset($nombreEstudio) && isset($anioEstreno) && isset($numeroTemporadas) && isset($ubicacionFinal)){
+                $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
+                    VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas', '$ubicacionFinal')";
+                $_conexion -> query($sql);
+            }
+        }
+        $sql = "SELECT nombre_estudio FROM estudios";
+        $resultado = $_conexion -> query($sql);
+        $estudios = [];
+        /* fetch_assoc() devuelve una fila de resultados como un array asociativo. Esto significa que podrás acceder
+        a cada columna de la fila por su nombre */
+        while($fila = $resultado -> fetch_assoc()){
+            array_push($estudios, $fila["nombre_estudio"]);
         }
     ?>
         
@@ -142,14 +149,6 @@
                 <select id="nombreEstudio" name="nombreEstudio" class="form-select form-select-lg">
                     <option value="">---Selecciona un estudio---</option>
                     <?php
-                    $sql = "SELECT nombre_estudio FROM estudios";
-                    $resultado = $_conexion -> query($sql);
-                    $estudios = [];
-                    /* fetch_assoc() devuelve una fila de resultados como un array asociativo. Esto significa que podrás acceder
-                    a cada columna de la fila por su nombre */
-                    while($fila = $resultado -> fetch_assoc()){
-                        array_push($estudios, $fila["nombre_estudio"]);
-                    } 
                     foreach ($estudios as $estudio): ?>
                         <!-- Ambas formas php las interpreta de la misma manera, está creando un option con el valor $estudio e imprimiendolo en el select -->
                         <option value="<?php echo $estudio;?>"><?= $estudio ?></option>
