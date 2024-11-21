@@ -63,7 +63,7 @@
             $anioEstrenoMaximo = $anioActual+5;
             // Verificar que el año esté en el rango permitido
             if($tmpAnioEstreno == ''){
-                $anioEstreno = NULL;
+                $errorAnio = "Es obligatorio para la base de datos";
             }else{
                 if(filter_var($tmpAnioEstreno, FILTER_VALIDATE_INT) === FALSE){
                     $errorAnio = "Debe ser un número entero.";
@@ -116,11 +116,30 @@
             //mueve el archivo que se ha cargado de una ubicación a otra
             move_uploaded_file($ubicacionTemporal, $ubicacionFinal);
 
-            //Añado los datos a la base de datos
+            //Si todo está correcto añado los datos a la base de datos
             if(isset($titulo) && isset($nombreEstudio) && isset($anioEstreno) && isset($numeroTemporadas) && isset($ubicacionFinal)){
+                
                 $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
                     VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas', '$ubicacionFinal')";
                 $_conexion -> query($sql);
+                ?>
+                    <div class="container mt-5">
+                        <div class="card">
+                            <div class="card-header text-center bg-primary text-white">
+                                <h1>Se ha añadido esto correctamente a Animes, amigo:</h1>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Título del anime:</strong> <?php echo "$titulo"; ?></li>
+                                    <li class="list-group-item"><strong>Nombre del estudio al que pertenece:</strong> <?php echo "$nombreEstudio"; ?></li>
+                                    <li class="list-group-item"><strong>Año de estreno del anime:</strong> <?php echo "$anioEstreno"; ?></li>
+                                    <li class="list-group-item"><strong>Número de temporadas total:</strong> <?php echo "$numeroTemporadas"; ?></li>
+                                    <li class="list-group-item"><strong>La imagen:</strong> <?php echo "$ubicacionFinal"; ?></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                <?php
             }
         }
         $sql = "SELECT nombre_estudio FROM estudios";
@@ -186,24 +205,7 @@
     </div>
     <?php
     if(isset($titulo) && isset($nombreEstudio) && isset($anioEstreno) && isset($numeroTemporadas) && isset($ubicacionFinal)){
-    ?>
-        <div class="container mt-5">
-            <div class="card">
-                <div class="card-header text-center bg-primary text-white">
-                    <h1>Se ha añadido esto correctamente a Animes, amigo:</h1>
-                </div>
-                <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item"><strong>Título del anime:</strong> <?php echo "$titulo"; ?></li>
-                        <li class="list-group-item"><strong>Nombre del estudio al que pertenece:</strong> <?php echo "$nombreEstudio"; ?></li>
-                        <li class="list-group-item"><strong>Año de estreno del anime:</strong> <?php echo "$anioEstreno"; ?></li>
-                        <li class="list-group-item"><strong>Número de temporadas total:</strong> <?php echo "$numeroTemporadas"; ?></li>
-                        <li class="list-group-item"><strong>La imagen:</strong> <?php echo "$ubicacionFinal"; ?></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    <?php
+    
     }
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
