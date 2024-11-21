@@ -31,6 +31,7 @@
         $sql = "SELECT * FROM animes WHERE id_anime = $idAnime";
         $resultado = $_conexion ->query($sql);
 
+        //Guardo en variables mías las columnas de mi base de datos
         while($fila = $resultado -> fetch_assoc()){
             $titulo = $fila["titulo"];
             $nombreEstudio = $fila["nombre_estudio"];
@@ -51,15 +52,16 @@
         }
 
 
+        //Cuando se pulsa el botón de editar se recogen estos datos de NUESTRO formulario en las variables para posteriormente modificarlos
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $idAnime = $_POST["id_anime"];
+            $idAnime = $_POST["idAnime"];
             $titulo = $_POST["titulo"];
             $nombreEstudio = $_POST["nombreEstudio"];
             $anioEstreno = $_POST["anioEstreno"];
             $numeroTemporadas = $_POST["numeroTemporadas"];
             //$imagen = $_POST["imagen"];
 
-
+            //Aquí es donde estoy editando la base de datos con las variables que han recogido los datos del formulario
             $sql = "UPDATE animes SET
                 titulo = '$titulo',
                 nombre_estudio = '$nombreEstudio',
@@ -136,7 +138,7 @@
             </div>
 
             <div class="mb-3">
-                <input type="hidden" name="id_anime" value="<?php echo $idAnime?>">
+                <input type="hidden" name="idAnime" value="<?php echo $idAnime?>">
                 <button type="submit" class="btn btn-primary">Editar Anime</button>
                 <a href="index.php" class="btn btn-secondary">Volver al index</a>
             </div>
