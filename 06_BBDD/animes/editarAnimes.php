@@ -62,12 +62,31 @@
 
             $sql = "UPDATE animes SET
                 titulo = '$titulo',
-                nombreEstudio = '$nombreEstudio',
-                anioEstreno = $anioEstreno,
-                numeroTemporadas = $numeroTemporadas,
-                WHERE id_anime = $idAnime
+                nombre_estudio = '$nombreEstudio',
+                anno_estreno = $anioEstreno,
+                num_temporadas = $numeroTemporadas 
+                    WHERE id_anime = $idAnime
             ";
             $_conexion -> query($sql);
+            if(isset($titulo) && isset($nombreEstudio) && isset($anioEstreno) && isset($numeroTemporadas)){
+                ?>
+                    <div class="container mt-5">
+                        <div class="card">
+                            <div class="card-header text-center bg-primary text-white">
+                                <h1>Se han editado los siguientes datos correctamente en Animes, amigo:</h1>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Título del anime:</strong> <?php echo "$titulo"; ?></li>
+                                    <li class="list-group-item"><strong>Nombre del estudio al que pertenece:</strong> <?php echo "$nombreEstudio"; ?></li>
+                                    <li class="list-group-item"><strong>Año de estreno del anime:</strong> <?php echo "$anioEstreno"; ?></li>
+                                    <li class="list-group-item"><strong>Número de temporadas total:</strong> <?php echo "$numeroTemporadas"; ?></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+            }
         }
     ?>
         

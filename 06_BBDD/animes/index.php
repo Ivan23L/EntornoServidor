@@ -62,6 +62,7 @@
                     <th>Número de temporadas</th>
                     <th>Imagen</th>
                     <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -79,11 +80,11 @@
                         <td class='table-info'>
                             <img width="100" height="150" src="<?php echo $fila["imagen"]?>">
                         </td>
-                        <td>
+                        <td class='table-secondary'>
                             <a class="btn btn-primary" 
                             href="editarAnimes.php?id_anime=<?php echo $fila["id_anime"]?>">Editar</a>
                         </td>
-                        <td class='table-warning'>
+                        <td class='table-light'>
                             <form action="" method="post">
                                 <!-- Hago que sea dinámico, cada anime tiene un ID único -->
                                 <input type="hidden" name="id_anime" value="<?php echo $fila["id_anime"]?>">

@@ -22,6 +22,7 @@
     </form>
 
     <?php
+    //Si le doy al botón del formulario se enviarán los datos y se ejecutará lo que hay dentro IMPORTANTE
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $mensaje = $_POST["mensaje"];
         $mensaje1 = $_POST["mensaje1"];
