@@ -55,8 +55,8 @@
         //Cuando se pulsa el botón de editar se recogen estos datos de NUESTRO formulario en las variables para posteriormente modificarlos
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $idAnime = $_POST["idAnime"];
-            $titulo = $_POST["titulo"];
-            $nombreEstudio = $_POST["nombreEstudio"];
+            $titulo = depurar($_POST["titulo"]);
+            $nombreEstudio = depurar($_POST["nombreEstudio"]);
             $anioEstreno = $_POST["anioEstreno"];
             $numeroTemporadas = $_POST["numeroTemporadas"];
             //$imagen = $_POST["imagen"];
