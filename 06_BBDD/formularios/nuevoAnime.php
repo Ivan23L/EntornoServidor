@@ -21,6 +21,16 @@
         ini_set("display_errors", 1 );   
         require('../../05_funciones/depurar.php');
         require('../animes/conexion.php');
+
+        session_start();
+        if(isset($_SESSION["usuario"])){
+            echo"<h2>Bienvenid@ ".$_SESSION["usuario"]."</h2>";
+        }else{
+            //CUIDADO AMIGO esta función es peligrosa, tiene que ejecutarse antes de que
+            //se ejecute el código body
+            header("location: ../animes/usuario/inicioSesion.php");
+            exit;
+        }
     ?>
     <!-- 
     El formulario de los animes lo crearemos en un fichero llamado “nuevo_anime.php” y tendrá los siguientes campos:

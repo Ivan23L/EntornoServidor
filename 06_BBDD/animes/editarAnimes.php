@@ -21,6 +21,16 @@
         ini_set("display_errors", 1 );   
         require('../../05_funciones/depurar.php');
         require('conexion.php');
+
+        session_start();
+        if(isset($_SESSION["usuario"])){
+            echo"<h2>Bienvenid@ ".$_SESSION["usuario"]."</h2>";
+        }else{
+            //CUIDADO AMIGO esta función es peligrosa, tiene que ejecutarse antes de que
+            //se ejecute el código body
+            header("location: ./usuario/inicioSesion.php");
+            exit;
+        }
     ?>
 </head>
 <body>

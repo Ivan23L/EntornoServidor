@@ -9,10 +9,21 @@
         error_reporting(E_ALL);
         ini_set("display_errors",1);
         require ('conexion.php');
+
+        session_start();
+        if(isset($_SESSION["usuario"])){
+            echo"<h2>Bienvenid@ ".$_SESSION["usuario"]."</h2>";
+        }else{
+            //CUIDADO AMIGO esta función es peligrosa, tiene que ejecutarse antes de que
+            //se ejecute el código body
+            header("location: usuario/inicioSesion.php");
+            exit;
+        }
     ?>
 </head>
 <body>
     <div class="container mt-5">
+        <a class="btn btn-danger" href="usuario/cierroSesion.php">Cerrar sesión</a>
         <h1>Tabla de animes</h1>
         <?php
             if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -27,26 +38,6 @@
             $resultado = $_conexion -> query($sql);
             
             /*
-            INSERT INTO estudios VALUES ('Studio Bind', 'Tokio', 2018);
-            INSERT INTO estudios VALUES ('Production I.G', 'Tokio', 1987);
-            INSERT INTO estudios VALUES ('White Fox', 'Tokio', 2007);
-            INSERT INTO estudios VALUES ('Gainax', 'Tokio', 1984);
-            INSERT INTO estudios VALUES ('ufotable', 'Tokio', 2000);
-            INSERT INTO estudios VALUES ('CoMix Wave Films', 'Tokio', 2007);
-
-            INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas) 
-                VALUES ('Mushoku Tensei', 'Studio Bind', 2021, 2);
-            INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas) 
-                VALUES ('Kuroko No Basket', 'Production I.G', 2012, 3);
-            INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas) 
-                VALUES ('Re:Zero - Starting Life in Another World', 'White Fox', 2016, 4);
-            INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas) 
-                VALUES ('Neon Genesis Evangelion', 'Gainax', 1995, 1);
-            INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas) 
-                VALUES ('Demon Slayer', 'ufotable', 2019, 3);
-            INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas) 
-                VALUES ('Your Name', 'CoMix Wave Films', 2016, 1);
-                
             Aplicamos la función query(es una consulta) a la conexión(es un objeto), donde se ejecuta la sentencia SQL hecha
             El resultado se almacena en $resultado, que es un objeto con una estructura parecida a los arrays
             */
