@@ -38,8 +38,20 @@
     <?php
         $idAnime = $_GET["id_anime"];
 
-        $sql = "SELECT * FROM animes WHERE id_anime = $idAnime";
-        $resultado = $_conexion ->query($sql);
+        /* $sql = "SELECT * FROM animes WHERE id_anime = $idAnime";
+        $resultado = $_conexion ->query($sql); */
+        
+        //1. Prepare
+        $sql = $_conexion -> prepare("SELECT * FROM animes WHERE id_anime = ?");
+
+        //2. Bind
+        $sql -> bind_param("i", $idAnime);
+
+        //3. Excute
+        $sql -> execute();
+
+        //4. Retrieve
+        $resultado = $sql -> get_result();
 
         //Guardo en variables mías las columnas de mi base de datos
         while($fila = $resultado -> fetch_assoc()){
@@ -72,14 +84,39 @@
             //$imagen = $_POST["imagen"];
 
             //Aquí es donde estoy editando la base de datos con las variables que han recogido los datos del formulario
-            $sql = "UPDATE animes SET
+            /* $sql = "UPDATE animes SET
                 titulo = '$titulo',
                 nombre_estudio = '$nombreEstudio',
                 anno_estreno = $anioEstreno,
                 num_temporadas = $numeroTemporadas 
                     WHERE id_anime = $idAnime
             ";
-            $_conexion -> query($sql);
+            $_conexion -> query($sql); */
+
+            //1. Prepare
+            $sql = $_conexion -> prepare ("UPDATE animes SET
+                titulo = ?,
+                nombre_estudio = ?,
+                anno_estreno = ?,
+                num_temporadas = ?
+                WHERE id_anime = ?
+            ");
+
+            //2. Binding
+            $sql -> bind_param("ssiii",
+            $titulo,
+            $nombre_estudio,
+            $anno_estreno,
+            $num_temporadas,
+            $id_anime
+            );
+
+            //3. Execute
+            $sql -> execute();
+
+            //4. Retrieve
+            $resultado = $sql -> get_result();
+
             if(isset($titulo) && isset($nombreEstudio) && isset($anioEstreno) && isset($numeroTemporadas)){
                 ?>
                     <div class="container mt-5">

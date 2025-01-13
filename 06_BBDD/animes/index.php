@@ -30,8 +30,16 @@
                 //por convención se usa siempre el id para borrar, pero se podría usar el titulo
                 $idAnime = $_POST["id_anime"];
                 //borrar el anime
-                $sql = "DELETE FROM animes WHERE id_anime = $idAnime";
-                $_conexion -> query($sql);
+                /* $sql = "DELETE FROM animes WHERE id_anime = $idAnime";
+                $_conexion -> query($sql); */
+
+                //1. Prepare
+                $sql = $_conexion -> prepare("DELETE FROM animes WHERE id_anime = ?");
+                //2. Bind
+                $sql -> bind_param("i", $idAnime);
+                //3. Excute
+                $sql -> execute();
+
             }
 
             $sql = "SELECT * FROM animes";

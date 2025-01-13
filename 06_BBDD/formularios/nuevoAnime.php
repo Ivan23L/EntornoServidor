@@ -129,9 +129,22 @@
             //Si todo está correcto añado los datos a la base de datos
             if(isset($titulo) && isset($nombreEstudio) && isset($anioEstreno) && isset($numeroTemporadas) && isset($ubicacionFinal)){
                 
-                $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
+                /* $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
                     VALUES ('$titulo','$nombreEstudio','$anioEstreno','$numeroTemporadas', '$ubicacionFinal')";
-                $_conexion -> query($sql);
+                $_conexion -> query($sql); */
+                
+                //1. Preparar
+                $sql = $_conexion -> prepare("INSERT INTO animes
+                    (titulo, nombre_estudio, anno_estreno, num_temporadas, imagen)
+                    VALUES (?, ?, ?, ?, ?)"
+                );
+                //2. Enlazado
+                $sql -> bind_param("ssiis",
+                    $titulo, $nombreEstudio, $anioEstreno,
+                    $numeroTemporadas, $ubicacionFinal
+                );
+                //3. Ejecución
+                $sql -> execute();
                 ?>
                     <div class="container mt-5">
                         <div class="card">
