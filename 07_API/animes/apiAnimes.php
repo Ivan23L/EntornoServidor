@@ -16,6 +16,12 @@
         case "POST":
             manejarPost($_conexion, $entrada);
             break;
+        case "DELETE":
+            manejarDelete($_conexion, $entrada);
+            break;
+        case "PUT":
+            manejarPut($_conexion, $entrada);
+            break;
     }
 
     function manejarGet($_conexion){
@@ -41,6 +47,39 @@
             echo json_encode(["mensaje" => "el anime se ha insertado correctamente"]);
         }else{
             echo json_encode(["mensaje" => "error al insertar el anime"]);
+        }
+    }
+
+    function manejarDelete($_conexion, $entrada){
+        $sql = "DELETE FROM estudios WHERE titulo = :titulo";
+        $stmt = $_conexion -> prepare($sql);
+        $stmt -> execute([
+            "titulo" => $entrada["titulo"]
+        ]);
+        if($stmt){
+            echo json_encode(["mensaje" => "el anime se ha borrado correctamente"]);
+        }else{
+            echo json_encode(["mensaje" => "error al borrar el anime"]);
+        }
+    }
+
+    function manejarPut($_conexion, $entrada) {
+        $sql = "UPDATE estudios SET
+            titulo = :titulo,
+            anno_estreno = :anno_estreno,
+            num_temporadas = :num_temporadas
+            WHERE nombre_estudio = :nombre_estudio";
+        $stmt = $_conexion -> prepare($sql);
+        $stmt -> execute([
+            "titulo" => $entrada["titulo"],
+            "nombre_estudio" => $entrada["nombre_estudio"],
+            "anno_estreno" => $entrada["anno_estreno"],
+            "num_temporadas" => $entrada["num_temporadas"] 
+        ]);
+        if($stmt) {
+            echo json_encode(["mensaje" => "el estudio se ha modificado"]);
+        } else {
+            echo json_encode(["mensaje" => "error al modificar el estudio"]);
         }
     }
 ?>

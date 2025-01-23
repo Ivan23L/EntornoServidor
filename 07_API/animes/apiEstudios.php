@@ -16,8 +16,8 @@
         case "POST":
             manejarPost($_conexion, $entrada);
             break;
-        case "PUT":
-            echo json_encode(["método" => "put"]);
+        case "PUT"://UPDATE
+            manejarPut($_conexion, $entrada);
             break;
         case "DELETE":
             manejarDelete($_conexion, $entrada);
@@ -49,6 +49,24 @@
             echo json_encode(["mensaje" => "el estudio se ha insertado correctamente"]);
         }else{
             echo json_encode(["mensaje" => "error al insertar el estudio"]);
+        }
+    }
+    
+    function manejarPut($_conexion, $entrada) {
+        $sql = "UPDATE estudios SET
+            ciudad = :ciudad,
+            anno_fundacion = :anno_fundacion
+            WHERE nombre_estudio = :nombre_estudio";
+        $stmt = $_conexion -> prepare($sql);
+        $stmt -> execute([
+            "ciudad" => $entrada["ciudad"],
+            "anno_fundacion" => $entrada["anno_fundacion"],
+            "nombre_estudio" => $entrada["nombre_estudio"]
+        ]);
+        if($stmt) {
+            echo json_encode(["mensaje" => "el estudio se ha modificado"]);
+        } else {
+            echo json_encode(["mensaje" => "error al modificar el estudio"]);
         }
     }
 
