@@ -35,6 +35,48 @@
         echo json_encode($resultado);
     }
 
+    function manejarGetParametros() {
+
+        global $_conexion;
+    
+        // Si filtramos por un parametro en concreto filtramos por ese parametro
+        if (isset($_GET["ciudad"]) && isset($_GET["anno_fundacion"])) {
+            $sql = "SELECT * FROM estudios WHERE 
+            ciudad = :ciudad,
+            anno_fundacion = :anno_fundacion";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "ciudad" => $_GET["ciudad"],
+                "anno_fundacion" => $_GET["anno_fundacion"]
+            ]);
+        } elseif (isset($_GET["anno_fundacion"])) {
+            $sql = "SELECT * FROM estudios WHERE anno_fundacion = :anno_fundacion";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "anno_fundacion" => $_GET["anno_fundacion"]
+            ]);
+        } elseif (isset($_GET["ciudad"])) {
+            $sql = "SELECT * FROM estudios WHERE ciudad = :ciudad";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "ciudad" => $_GET["ciudad"]
+            ]);
+        } else {
+            // Si no tiene ningún parametro muestra todo o ningun where.
+            $sql = "SELECT * FROM estudios";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute();
+        }
+        /* 
+            Si tenemos varios parametros pondremos varios if, si tenemos más de 3 o 4 tendremos
+            que hacer una inyección dinamica de sql 
+        */
+    
+        $resultado = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($resultado);
+    
+    }
+
     function manejarPost($_conexion, $entrada){
         $sql = "INSERT INTO estudios(nombre_estudio, ciudad, anno_fundacion)
             VALUES (:nombre_estudio, :ciudad, :anno_fundacion)";

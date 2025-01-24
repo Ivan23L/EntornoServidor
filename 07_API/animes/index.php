@@ -7,8 +7,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
+    <form action="" method="get">
+        <label for="ciudad">Ciudad: </label>
+        <input type="text" name="ciudad">
+        <input type="submit" value="Buscar">
+    </form>
     <?php
         $apiUrl = "http://localhost/ServidorWeb/Ejercicios1/07_API/animes/apiEstudios.php";
+        
+        if(!empty($_GET["ciudad"])){
+            $ciudad = $_GET["ciudad"];
+            $apiUrl ="$apiUrl?ciudad=$ciudad";
+        }
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $apiUrl);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
