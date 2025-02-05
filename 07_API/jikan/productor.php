@@ -28,7 +28,7 @@
         $producers = $datos["data"];
     ?>
     <h1>Nombre del productor</h1>
-    <h1><?php echo $producers["titles"]["0"]["title"]?></h1>
+    <h2><?php echo $producers["titles"]["0"]["title"]?></h2>
 
     <h1>Logo productor</h1>
     <img width="200px" src="<?php echo $producers["images"]["jpg"]["image_url"] ?>">

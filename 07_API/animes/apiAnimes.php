@@ -7,6 +7,7 @@
     /* Crea un array asociativo según la entrada en el formulario
         $entrada["numero"] -> <input name="numero">
     */
+    //HAY QUE INGRESAR A ESTA PÁGINA DESDE EL NAVEGADOR URL
 
     switch($metodo) {
         case "GET":

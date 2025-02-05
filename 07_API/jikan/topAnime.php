@@ -12,7 +12,23 @@
 </head>
 <body>
     <?php
-        $apiUrl = "https://api.jikan.moe/v4/top/anime";
+        if (isset($_GET["page"])) {
+            $paginaPrincipal = $_GET["page"];
+            if ($paginaPrincipal < 1) {
+                $paginaPrincipal = 1;
+            }
+        } else {
+            $paginaPrincipal = 1;
+        }
+
+        if (isset($_GET["type"])) {
+            $filtro = $_GET["type"];
+        } else {
+            $filtro = "";
+        }
+
+        //SIEMPRE QUE FALLE MIRA LA APIURL
+        $apiUrl = "https://api.jikan.moe/v4/top/anime?page=$paginaPrincipal&type=$filtro";
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $apiUrl);
@@ -22,13 +38,36 @@
 
         $datos = json_decode($respuesta, true);
         $animes = $datos["data"];
+        $paginas = $datos["pagination"];
         //print_r($animes);
+
+        $paginaActual = $paginas["current_page"];
+        $nextPagina = ($paginaActual + 1);
+        $prePagina = ($paginaActual - 1);
+        $totalPaginas = $paginas["last_visible_page"];
     ?>
     <form action="" method="get">
-        <label for="filtro">Filtrar por: </label>
-
-        <p><input class='btn btn-primary' type="submit" value="Filtrar">
+        <br><h5>Filtrar por:</h5>
+        <input type="radio" id="tv" name="type" value="tv" 
+            <?php if ($filtro == "tv") {
+                echo "checked"; 
+            } ?>>
+        <label for="tv">Serie </label>
+        <input type="radio" id="movie" name="type" value="movie" 
+            <?php if ($filtro == "movie") {
+                echo "checked"; 
+            } ?>>
+        <label for="movie">Película </label>
+        <input type="radio" id="todo" name="type" value="" 
+            <?php if ($filtro == "") { 
+                echo "checked"; 
+            } ?>>
+        <label for="todo">Todo </label><br>
+        <input class="btn btn-warning" type="submit" value="Filtrar"><br><br>
     </form>
+
+    <br><br>
+
     <table class = "table table-bordered table-light table-hover border-secondary text-center">
         <thead class=" table-danger">
             <tr>
@@ -75,8 +114,27 @@
         </tbody>
     </table>
     <div class="container d-flex justify-content-center align-items-center">
-        <a class="btn btn-primary" href="">Anterior</a>
-        <a class="btn btn-primary" href="">Siguiente</a>
+    <div class="d-flex justify-content-center my-3">
+        <!-- Página anterior -->
+        <?php
+            if ($paginaActual > 1 && $filtro != "") { ?>
+                <a class="btn btn-primary" href="?page=<?php echo $prePagina ?>&type=<?php echo $filtro ?>">Anterior</a>
+        <?php } else if ($paginaActual > 1) { ?>
+                <a class="btn btn-primary" href="?page=<?php echo $prePagina ?>">Anterior</a>
+        <?php } else { ?>
+                <a href="#" hidden>Anterior</a>
+        <?php } ?>
+
+            <!-- Siguiente página -->
+        <?php
+            if ($paginaActual < $totalPaginas && $filtro != "") { ?>
+                <a class="btn btn-primary" href="?page=<?php echo $nextPagina ?>&type=<?php echo $filtro ?>">Siguiente</a>
+        <?php } else if ($paginaActual < $totalPaginas) { ?>
+                <a class="btn btn-primary" href="?page=<?php echo $nextPagina ?>">Siguiente</a>
+        <?php } else { ?>
+                <a href="#" hidden>Siguiente</a>
+        <?php } ?>
+    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

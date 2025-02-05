@@ -28,7 +28,7 @@
     }
 
     function manejarGet($_conexion){
-        $sql = "SELECT * FROM consolas";
+        $sql = "SELECT * FROM fabricantes";
         $stmt = $_conexion -> prepare($sql);
         $stmt -> execute();
         $resultado = $stmt -> fetchAll(PDO::FETCH_ASSOC);

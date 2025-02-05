@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estudios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <?php
+        error_reporting(E_ALL);
+        ini_set("display_errors", 1);
+    ?>
 </head>
 <body>
     <form action="" method="get">
@@ -13,16 +17,18 @@
         <input type="submit" value="Buscar">
     </form>
     <?php
+        //TIENES QUE CAMBIAR ESTA RUTA EN CASA Ó TE PETA AMIGO FIJATE EN LAS RUTAS
         $apiUrl = "http://localhost/ServidorWeb/Ejercicios1/07_API/animes/apiEstudios.php";
         
-        if(!empty($_GET["ciudad"])){
+        if(isset($_GET["ciudad"]) and !empty($_GET["ciudad"])){
             $ciudad = $_GET["ciudad"];
             $apiUrl ="$apiUrl?ciudad=$ciudad";
         }
 
         $curl = curl_init();
+        //Inicializamos el curl con una URL, que va a ser $apiUrl
         curl_setopt($curl, CURLOPT_URL, $apiUrl);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);// Para habilitar la transferencia de datos
         $respuesta = curl_exec($curl);
         curl_close($curl);
 

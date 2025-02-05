@@ -3,50 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categorías</title>
+    <title>Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <?php
         error_reporting(E_ALL);
         ini_set("display_errors",1);
-        require ('../util/conexion.php');
-        require ('../util/depurar.php');
-
+        require ('util/conexion.php');
         session_start();
         if(isset($_SESSION["usuario"])){
             echo"<h2>Bienvenid@ ".$_SESSION["usuario"]."</h2>";
-        }else{
-            //CUIDADO AMIGO esta función es peligrosa, tiene que ejecutarse antes de que
-            //se ejecute el código body
-            header("location: ../usuario/iniciar_sesion.php");
-            exit;
         }
     ?>
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Tabla de categorías</h1>
+        <h1>Tabla de productos</h1>
         <?php
-            if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $categoria = $_POST["categoria"];
-                //borrar la categoría (NO SE PUEDE SI ESTA TIENE ALGÚN PRODUCTO RELACIONADO)
-                $sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
-                $resultado = $_conexion -> query($sql);
-            }
-
-            $sql = "SELECT * FROM categorias";
+            $sql = "SELECT * FROM productos";
             $resultado = $_conexion -> query($sql);
-            
         ?>
-        <a href="./nueva_categoria.php" class="btn btn-primary">Crea una categoría</a>
-        <a class="btn btn-success" href="../index.php">Volver a la tienda</a>
-        <a class="btn btn-danger" href="../usuario/cerrar_sesion.php">Cerrar sesión</a>
+        <a href="productos/index.php" class="btn btn-primary">Productos</a>
+        <a href="categorias/index.php" class="btn btn-primary">Categorias</a>
+        <?php
+            if(isset($_SESSION["usuario"])){
+                ?><a class="btn btn-danger" href="usuario/cerrar_sesion.php">Cerrar sesión</a><?php
+                ?><a class="btn btn-warning" href="usuario/cambiar_credenciales.php">Cambiar contraseña</a><?php
+            }else{
+                ?><a href="usuario/registro.php" class="btn btn-warning">Registrate</a><?php
+                ?><a href="usuario/iniciar_sesion.php" class="btn btn-warning">Inicia Sesión</a><?php
+            }
+        ?>
+        
         <table class = "table table-bordered table-light table-hover border-secondary text-center">
             <thead class=" table-danger">
                 <tr>
-                    <th>Categoría</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
                     <th>Descripción</th>
-                    <th>Editar</th>
-                    <th>Borrar</th>
+                    <th>Categoría</th>
+                    <th>Stock</th>
+                    <th>Imagen</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,19 +52,14 @@
                     while($fila = $resultado -> fetch_assoc()){
                         //Cada valor que devuleve tiene dos claves, tanto el nombre de la columna, como el valor que le corresponde a la columna
                         echo"<tr>";
-                        echo "<td class='table-warning'>" . $fila["categoria"] . "</td>";
+                        echo "<td class='table-warning'>" . $fila["nombre"] . "</td>";
+                        echo "<td class='table-success'>" . $fila["precio"] . "</td>";
                         echo "<td class='table-success'>" . $fila["descripcion"] . "</td>";
+                        echo "<td class='table-success'>" . $fila["categoria"] . "</td>";
+                        echo "<td class='table-info'>" . $fila["stock"] . "</td>";
                         ?>
-                        <td class='table-secondary'>
-                            <a class="btn btn-primary" 
-                            href="editar_categoria.php?categoria=<?php echo $fila["categoria"]?>">Editar categoría</a>
-                        </td>
-                        <td class='table-light'>
-                            <form action="" method="post">
-                                <!-- Hago que sea dinámico, cada categoría es única -->
-                                <input type="hidden" name="categoria" value="<?php echo $fila["categoria"]?>">
-                                <input type="submit" value="Borrar" class="btn btn-danger">
-                            </form>
+                        <td class='table-info'>
+                            <img width="100" height="150" src="<?php echo $fila["imagen"]?>">
                         </td>
                         <?php
                         echo"</tr>";
