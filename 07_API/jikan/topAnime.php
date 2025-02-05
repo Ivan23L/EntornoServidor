@@ -48,17 +48,17 @@
     ?>
     <form action="" method="get">
         <br><h5>Filtrar por:</h5>
-        <input type="radio" id="tv" name="type" value="tv" 
+        <input type="radio" id="tv" name="type"
             <?php if ($filtro == "tv") {
                 echo "checked"; 
             } ?>>
         <label for="tv">Serie </label>
-        <input type="radio" id="movie" name="type" value="movie" 
+        <input type="radio" id="movie" name="type"
             <?php if ($filtro == "movie") {
                 echo "checked"; 
             } ?>>
         <label for="movie">Película </label>
-        <input type="radio" id="todo" name="type" value="" 
+        <input type="radio" id="todo" name="type"
             <?php if ($filtro == "") { 
                 echo "checked"; 
             } ?>>
