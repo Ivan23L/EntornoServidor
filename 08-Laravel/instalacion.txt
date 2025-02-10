@@ -1,0 +1,54 @@
+https://docs.google.com/presentation/d/16VGrTBjBC8egr7Br0-6CWFtHzHp8L3ngpD1Lai4u6kM/edit#slide=id.p
+Comandos para instalar laravel
+
+- Primero tenemos que instalar composer, 
+que es un gestor de paquetes para descargarnos codigo de php entre otras cosas
+
+- Para eso, vamos a la web getcomposer a la seccion de linux
+
+    1. Descargar el composer-setup. PEGAR ESTE COMANDO Y SE INSTALA
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }"
+    php composer-setup.php
+    php -r "unlink('composer-setup.php');"ç
+
+    2. Luego, añadiremos composer al path del sistema, cuando añadimos un comando al path del
+    sistema, podemos usarlo desde cualquier punto de la consola. Ahora mismo no podriamos si no 
+    lanzar los comandos de composer para ejecutar paquetes.
+    Para añadirlo al path, tenemos que usar el comando que hay más abajo para mover el archivo ejecutable
+    de composer, ya que ahora para ejecutar sus comandos tenemos que hacerlo con la ruta del archivo descargado
+    Si hemos descargado en el home del usuario el composer, nuestro comando será:
+
+        sudo mv composer.phar usr/local/bin/composer
+
+    PARA PROBAR QUE FUNCIONA, EJECUTAR "composer" DESDE CUALQUIER SITIO DE LA CONSOLA
+
+    3. Le damos permisos 777 a la carpeta, y creamos el proyecto de laravel con este comando, que creará
+    toda la estructura del proyecto:
+
+        composer create-project --prefer-dist laravel/laravel
+
+    Luego entramos en la carpeta por consola y ejecutamos el proyecto con:
+
+        php artisan serve
+
+    Y vamos a la ruta que nos indica, que es localhost:8000, y comprobamos que se muestra la página
+    de bienvenida de laravel
+
+    4. CARPETAS IMPORTANTES EN LARAVEL
+        - CONTROLADORES: App/Http/Controllers
+        - MODELOS: App/Models
+        - VISTAS: resources/views
+
+COMANDOS:
+
+-   php artisan route:list --> muestra una lista de las URLs disponibles 
+        (no tienen por qué ser todo vistas)
+
+
+EJERCICIOS:
+    1. Crear un controlador marcaController que contenga una lista de marcas
+    y mostrarlas en la lista marcas.blade.php
+
+    2. Modificar el controlador cocheController para que en vez de tener una lista de coches,
+    sea una tabla con el modelo del coche, su marca y su precio.
