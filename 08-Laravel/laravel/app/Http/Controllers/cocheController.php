@@ -15,7 +15,7 @@ class cocheController extends Controller
             ["Citroën", "C15", 2000],
             ["Mitsubishi", "Pajero", 2000],
             ["Tesla", "Cybertruck", 2000],
-            ["Tesla Model S"]
+            ["Tesla", "Model S", 2000]
         ];
                 //nombre de la vista
         return view('coches', ['coches' => $coches]);
