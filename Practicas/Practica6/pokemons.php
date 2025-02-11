@@ -16,6 +16,7 @@
 
     <?php
 
+        //Indica el número de datos (pokémons) que nos devuelve la API y se muestran en cada página
         if (isset($_GET["limit"])) {
             $limite = $_GET["limit"];
             if ($limite < 1) {
@@ -25,7 +26,7 @@
             $limite = 5;
         }
 
-        //
+        //Indica el punto de partida en el que la API nos devolverá los datos
         if (isset($_GET["offset"])) {
             $offset = $_GET["offset"];
             if ($offset < 1) {
