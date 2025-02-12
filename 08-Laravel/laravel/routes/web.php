@@ -29,4 +29,5 @@ Route::get('/hello', function () {
 
 Route::get('/coches', [cocheController::class, 'index']);
 
-Route::get('/marcas', [marcaController::class, 'index']);
+/* Route::get('/marcas', [marcaController::class, 'index']); */
+Route::resource('/marcas', marcaController::class);
