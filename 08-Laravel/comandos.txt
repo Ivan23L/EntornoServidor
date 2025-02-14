@@ -1,0 +1,30 @@
+COMANDOS:
+
+-   php artisan route:list --> muestra una lista de las URLs disponibles 
+(no tienen por qué ser todo vistas, se utiliza para mostrar 
+los controladores y verificar si se han añadido correctamente)
+
+-   php artisan make:controller marcaController --resource --> para crear un controlador
+(si se añade --resource, creará un controlador con funciones CRUD )
+
+-   php artisan serve --> Inicia el servidor (debes estar en la carpeta del proyecto)
+
+-   chmod -R 777 /var/www/html/ServidorWeb/Ejercicios1/08-Laravel/ --> DAR PERMISOS A LA CARPETA
+
+-   Route::get('/marcas', marcaController::class); 
+(en wep.php marca la ruta a la que hace referencia, 
+en este caso /marcas en la URL nos llevaría a marcaController)
+
+-   php artisan make:Model Marca -m
+(Ha creado un modelo y tabla)
+
+-   php artisan migrate --> (ejecuta lo que hayamos escrito en el archivo de el 
+directorio MIGRATION en mi caso fue el último 2025_02_12_090449_create_marcas_table 
+y crea dichas columnas en la tabla correspondiente) Se vería algo así:
+        2014_10_12_000000_create_users_table ............................. 58ms DONE
+        2014_10_12_100000_create_password_reset_tokens_table ............. 34ms DONE
+        2019_08_19_000000_create_failed_jobs_table ....................... 55ms DONE
+        2019_12_14_000001_create_personal_access_tokens_table ............ 81ms DONE
+        2025_02_12_090449_create_marcas_table ............................ 56ms DONE
+
+

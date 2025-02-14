@@ -40,11 +40,6 @@ que es un gestor de paquetes para descargarnos codigo de php entre otras cosas
         - MODELOS: App/Models
         - VISTAS: resources/views
 
-COMANDOS:
-
--   php artisan route:list --> muestra una lista de las URLs disponibles 
-        (no tienen por qué ser todo vistas)
-
 
 EJERCICIOS:
     1. Crear un controlador marcaController que contenga una lista de marcas

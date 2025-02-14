@@ -34,6 +34,7 @@ class marcaController extends Controller
     public function create()
     {
         //
+        return view('marcas/create');
     }
 
     /**
@@ -42,6 +43,14 @@ class marcaController extends Controller
     public function store(Request $request)
     {
         //
+        $marca = new Marca();
+        $marca->marca = $request->input('marca');
+        $marca->anno_fundacion = $request->input('anno_fundacion');
+        $marca->pais = $request->input('pais');
+        //Guarda la marca en la base de datos
+        $marca->save();
+
+        return redirect("./marcas");
     }
 
     /**
